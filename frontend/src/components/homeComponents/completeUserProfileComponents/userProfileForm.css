@@ -1,0 +1,127 @@
+.main-upf{
+    width: 100%;
+}
+.form__details{
+    background-color: white;
+    width: 90%;
+}
+.input-div{
+    display: flex;
+    width: 100%;
+}
+
+.form__details input {
+	background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+    max-width: 300px;
+}
+
+.form__details textarea {
+
+    background-color: #eee;
+	border: none;
+	padding: 12px 15px;
+	margin: 8px 0;
+	width: 100%;
+    max-width: 500px;
+    height: 150px;
+      
+}
+
+.left-inputs{
+    /* margin: 0px 100px 0px 10px; */
+    margin-right: 10px;
+    width: 100%;
+    height: 360px;
+}
+
+.right-inputs{
+    /* margin: 0px 10px 0px 100px; */
+    margin-left: 10px;
+    width: 100%;
+    height: 360px;
+}
+
+.form__details p{
+    margin-bottom: -10px;
+    margin-right: -100px ;
+    padding: 0px;
+    font-size: 12px;
+    color: tomato;
+}
+
+.buttons{
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+}
+
+.prev-button{
+    position: absolute;
+    bottom: 2%;
+    left: 2%;
+
+}
+
+.my-select{
+    width: 100%;
+    max-width: 300px;
+}
+
+.prev-button button{
+    border-radius: 20px;
+	border: 1px solid #FF4B2B;
+	background-color: #FF4B2B;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+
+}
+
+.buttons button{
+    border-radius: 20px;
+	border: 1px solid #FF4B2B;
+	background-color: #FF4B2B;
+	color: #FFFFFF;
+	font-size: 12px;
+	font-weight: bold;
+	padding: 12px 45px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+}
+
+.buttons button:disabled{
+    opacity: 0.5;
+}
+
+
+
+.no-div{
+    display: none;
+}
+
+.show-div{
+    display: inline-block;
+}
+
+@media only screen and (max-width: 600px) {
+    .input-div {
+      flex-direction: column;
+    }
+    .left-inputs{
+        height: auto;
+        margin: 0;
+    }
+    .right-inputs{
+        height: auto;
+        margin: 0;
+    }
+  }

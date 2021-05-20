@@ -5,27 +5,20 @@
 	box-sizing: border-box;
 }
 
-body {
-	background: #f6f5f7;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	font-family: 'Montserrat', sans-serif;
-	height: 100vh;
-	margin: -20px 0 50px;
+.login_signup__page{
+	margin-top: 20px;
 }
 
-h1 {
+.login_signup__page h1 {
 	font-weight: bold;
 	margin: 0;
 }
 
-h2 {
+.login_signup__page h2 {
 	text-align: center;
 }
 
-p {
+.login_signup__page p {
 	font-size: 14px;
 	font-weight: 100;
 	line-height: 20px;
@@ -33,18 +26,18 @@ p {
 	margin: 20px 0 30px;
 }
 
-span {
+.login_signup__page span {
 	font-size: 12px;
 }
 
-a {
+.login_signup__page a {
 	color: #333;
 	font-size: 14px;
 	text-decoration: none;
 	margin: 15px 0;
 }
 
-button {
+.login_signup__page button {
 	border-radius: 20px;
 	border: 1px solid #FF4B2B;
 	background-color: #FF4B2B;
@@ -70,7 +63,7 @@ button.ghost {
 	border-color: #FFFFFF;
 }
 
-form {
+.login_signup__page form {
 	background-color: #FFFFFF;
 	display: flex;
 	align-items: center;
@@ -81,7 +74,7 @@ form {
 	text-align: center;
 }
 
-input {
+.login_signup__page input {
 	background-color: #eee;
 	border: none;
 	padding: 12px 15px;
@@ -123,6 +116,17 @@ input {
 	width: 50%;
 	opacity: 0;
 	z-index: 1;
+}
+
+.datePicker{
+	margin: 8px 0;
+	height: 50px;
+	background-color: #eee;
+	display: flex;
+	justify-content: space-between;
+}
+.datePicker > label > p{
+	font-size: 70%;
 }
 
 .container.right-panel-active .sign-up-container {

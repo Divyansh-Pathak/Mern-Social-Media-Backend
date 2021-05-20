@@ -1,0 +1,44 @@
+.like-comment-share {
+    width: 100%;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    margin: -5px;
+}
+
+.like-comment-share div {
+    flex-basis: 33%;
+    margin: 0 5%;
+    text-align: center;
+    /* border: solid; */
+    border-width: thin;
+    border-color: black;
+    cursor: pointer;
+}
+
+.lcs-blocks {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.lcs-icons {
+    height: 80%;
+    padding: 0;
+    margin: 0;
+}
+
+.lcs-button {
+    margin: 0;
+    padding: 0;
+    height: 80%;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+
+}
+
+.on-button{
+  color: blue;
+}

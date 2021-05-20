@@ -9,13 +9,18 @@ const userSchema = mongoose.Schema({
     profession : String
   },
   contactDetails : {
-    eMail : String,
-    phone : String
+    email : String,  //unique
+    phone : String   //unique
+  },
+  loginDetails : {
+    hash: String,
+    salt: String,
   },
   hobbies : [],
   Bio : String,
   profileImageURL : String,
   coverImageURL : String,
+  userProfileURL: String,
   followers : [],
   following : [],
   community : []

@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital@1&display=swap');
+
+.comment {
+  padding: 3px 12px;
+  display: flex;
+}
+
+.username{
+  text-indent: 5px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.comment-wrapper{
+  background-color: #e1e5ea;
+  margin: 0 3%;
+  padding: 0.5% 2%;
+  border-radius: 25px;
+}
+
+.comment-wrapper>.comment{
+
+  font-size: 14px;
+
+}

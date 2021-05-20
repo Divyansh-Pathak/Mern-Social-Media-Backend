@@ -1,0 +1,13 @@
+.feed__posts {
+  margin-top: 5px;
+  align-self: center;
+  overflow:hidden;
+}
+
+.feed {
+  margin-top: auto;
+  width: 100%;
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+}

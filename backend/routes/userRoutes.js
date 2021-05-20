@@ -1,29 +1,38 @@
 const express = require("express");
 const router = express.Router();
-
+const passport = require('passport');
+const {validateUserDetails}= require("../Middlewares/validationMiddleware");
 const {
-    addUser,
-  } = require("../routeHandlers/userHandler");
+  addUser,
+  sendUser,
+  editUser
+} = require("../routeHandlers/userHandler");
 
-router.post("/user/add", addUser);
-// router.get("/user/delete", deleteUser);
-// router.get('/user/edit', editUser);
+
+router.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success' }));
+
+router.post('/register', addUser);
+
+router.post('/editProfile', validateUserDetails, editUser);
+
+router.get('/logout', function (req, res) {
+  req.logout();
+  res.send("Logout Hogya");
+});
+
+router.get('/user', sendUser);
 
 router.get('/', (req, res) => {
   res.send("Express is running");
 });
 
-router.get('/user/add', (req, res, next) => {
-
-  // const form = '<h1>Register Page</h1><form method="post" action="register">\
-  //                 Enter Username:<br><input type="text" name="uname">\
-  //                 <br>Enter Password:<br><input type="password" name="pw">\
-  //                 <br><br><input type="submit" value="Submit"></form>';
-
-  const form = "Aake Dekh le server me jhaak le kuch nhi milega";
-
-  res.send(form);
-  
+router.get('/login-failure', (req, res) => {
+  res.json({isLoggedIn: false});
 });
+
+router.get('/login-success', (req, res) => {
+  res.json({isLoggedIn: true});
+});
+
 
 module.exports = router;
