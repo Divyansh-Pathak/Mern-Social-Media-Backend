@@ -46,7 +46,7 @@ function CreatePost({ user }) {
 
   function uploadFile(getfile, caption, tags, userName, setProgress) {
     if(getfile){
-      postRoutes.postPosts(getfile, caption, tags, userName, setProgress, true);
+      postRoutes.postPosts(getfile, caption, tags, userName, setProgress);
     }else{
       alert("Please select an image...");
     }

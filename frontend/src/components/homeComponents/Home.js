@@ -31,7 +31,7 @@ function Home() {
         <div className="home-body row">
 
           <div className="col-lg-3 order-2 order-lg-1">
-            <LeftWidget/>
+            {/* <LeftWidget/> */}
           </div>
 
           <div className="home-center col-lg-6 order-1 order-lg-2">

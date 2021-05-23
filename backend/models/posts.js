@@ -5,7 +5,7 @@ const postSchema = mongoose.Schema({
     fileType: [],
     postFileURL: [],
     caption: String,
-    likes: Number,
+    likes: [],
     dislikes: Number,
     CommentBox:[{
         commentByUser: {

@@ -42,7 +42,9 @@ function Feed({ user }) {
             postImageUrl={post.postFileURL}
             postFileType={post.fileType}
             caption={post.caption}
+            likes= {post.likes}
             comments={post.CommentBox}
+            date={post.date}
             user={user}
           />
         ))}

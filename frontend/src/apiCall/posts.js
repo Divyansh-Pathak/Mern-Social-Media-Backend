@@ -64,6 +64,13 @@ export default {
           console.log(error);
         }));
       },
+
+      postLike: async (likeData) =>
+     instance({
+        'method': 'POST',
+        'url':'/like',
+        'data': likeData,
+    }).then((response)=> (response.data)).catch(err => "Error in Liking ot disliking"),
     
     postComment: async (commentData) =>
      instance({

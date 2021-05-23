@@ -50,7 +50,7 @@ router.post('/upload', upload.array('files'), async (req, res) => {
   console.log("Array should be multer", req.body);
   console.log("Array of files", req.files);
 
-  if(req.body.isMedia){
+ 
 
     let filenameAsId = req.files[0].filename;
 
@@ -70,7 +70,7 @@ router.post('/upload', upload.array('files'), async (req, res) => {
         fileType: contentType,
         postFileURL: fileNames, //to be set
         caption: req.body.caption,
-        likes: 0,
+        likes: [],
         dislikes: 0,
         uploadedBy: {
           userName: req.user.personalInformation.name,
@@ -87,7 +87,7 @@ router.post('/upload', upload.array('files'), async (req, res) => {
   
     res.json({fileNames});
 
-  }
+  
 
 
 });
@@ -106,7 +106,7 @@ router.post('/uploadText', async (req, res) => {
         postID: filename,
         fileType: "text",
         caption: req.body.caption,
-        likes: 0,
+        likes: [],
         dislikes: 0,
         uploadedBy: {
           userName: req.user.personalInformation.name,
@@ -123,12 +123,39 @@ router.post('/uploadText', async (req, res) => {
     res.json({filename});
 
   
-})
+});
 
 router.post('/multipleUpload', upload.array('files'), async (req, res) => {
   console.log("Array should be here bu multer", req.body);
   console.log("Array file", req.files);
   res.json({ file: req.files, body: req.body});
+});
+
+
+
+
+//@update like
+
+router.post("/like", async (req, res) => {
+  const filter = { postID: req.body.postID };
+  let result = await Post.findOne(filter);
+  if(req.body.isLiked){
+    console.log({condition: req.body.isLiked});
+    result.likes.push(req.user.contactDetails.email);
+
+  }else{
+    console.log({condition: result.likes});
+    result.likes= result.likes.filter((email) => email!==req.user.contactDetails.email);
+    
+  }
+  
+  result.save().then(()=>{
+
+    res.json({likeRequest: "successfull"});
+
+  }).catch(err => res.json({likeRequest: "unsuccessfull"}))
+  
+
 });
 
 
@@ -170,7 +197,21 @@ router.get('/files', (req, res) => {
 });
 
 router.get('/posts', async (req, res) => {
-  const post = await Post.find();
+
+  const checker = ["Photography", "Reading Books"];
+
+  const filter = { tags : { $in : checker }};
+
+  const post = await Post.find(filter);
+
+  // array.sort(function(a,b){
+  //   // Turn your strings into dates, and then subtract them
+  //   // to get a value that is either negative, positive, or zero.
+  //   return new Date(b.date) - new Date(a.date);
+  // });
+
+
+ 
   if (!post || post.length === 0) {
     res.status(404).json({
       err: "NO POST YET"

@@ -6,11 +6,31 @@ import Comment from "./Comment";
 import LikeCommentShare from "./likeCommentShare";
 
 
-function Post({ id, userName, postImageUrl, postFileType, caption, comments, user }) {
+function Post({ id, userName, postImageUrl, postFileType, caption, comments, user, userEmail, likes, date }) {
 
   const [commentInput, setCommentInput] = useState(false);
 
   const [postIterator, setPostIterator] = useState(0);
+
+  function findDays(){
+    let date1 = new Date(date);
+    let date2 = new Date();
+    var Difference_In_Time = date2.getTime() - date1.getTime();
+    var dtt= Difference_In_Time / (1000*60)
+    let diffInMin =  Math.round(dtt);
+    let diffInHour = Math.round(Difference_In_Time/(1000*60*60));
+    let diffInDays = Math.round(Difference_In_Time/(1000*60*60*24));
+    if(diffInMin<60){
+      return `${diffInMin} Min ago`;
+    }else if(diffInHour<24){
+      return `${diffInHour} Hours ago`;
+
+    }else if(diffInDays<2){
+      return "Yesterday";
+    }else {
+      return `${diffInDays} Days ago`;
+    }
+  }
 
   const handleIterator = (click) => {
     let maxIteration = postImageUrl ? postImageUrl.length : 0;
@@ -28,6 +48,7 @@ function Post({ id, userName, postImageUrl, postFileType, caption, comments, use
 
   const addComment = (newComment) => {
     comments.push(newComment);
+    setCommentInput(false);
   }
 
   return (
@@ -52,7 +73,7 @@ function Post({ id, userName, postImageUrl, postFileType, caption, comments, use
           <h6 class="author">
             <a href="/userProfile">{userName}</a>
           </h6>
-          <span class="post-time">20 min ago</span>
+          <span class="post-time">{findDays()}</span>
         </div>
 
       </div>
@@ -112,7 +133,7 @@ function Post({ id, userName, postImageUrl, postFileType, caption, comments, use
 
       <div class="post-meta">
 
-        <LikeCommentShare commentClicked={showCommentInput} />
+        <LikeCommentShare id={id} likes= {likes} userEmail ={userEmail} commentClicked={showCommentInput} />
 
       </div>
 

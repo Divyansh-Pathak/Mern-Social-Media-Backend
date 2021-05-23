@@ -1,26 +1,63 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import './likeCommentShare.css';
 import ChatIcon from '@material-ui/icons/Chat';
 import ShareIcon from '@material-ui/icons/Share';
+import postRoutes from '../../../apiCall/posts';
+import userContext from '../../../helpers/userContext';
 
-export default ({commentClicked}) => {
+export default ({commentClicked, id, likes}) => {
     const [likeState , setLikeState] = useState(false);
+    const [processLike, setProcessLike] = useState(false);
     const [commentState , setCommentState] = useState(false);
     const [shareState , setShareState] = useState(false);
     const [likeButtonClass , setLikeButtonClass] = useState("lcs-blocks");
     const [commentButtonClass , setCommentButtonClass] = useState("lcs-blocks");
     const [shareButtonClass , setShareButtonClass] = useState("lcs-blocks");
 
-    const handleLikeClick = (State) => {
-        if(State===false) {
+    const userDetails = useContext(userContext);
+    const userEmail = userDetails.contactDetails ? userDetails.contactDetails.email : "";
+
+    useEffect(() => {
+        
+        let check = likes.indexOf(userEmail);
+        
+        if(check<0){
+            setLikeState(false);
+            setLikeButtonClass("lcs-blocks");
+
+        }else{
             setLikeState(true);
             setLikeButtonClass("lcs-blocks on-button");
         }
-        if(State===true) {
-            setLikeState(false);
-            setLikeButtonClass("lcs-blocks");
-        }      
+    }, [userEmail, likes]);
+
+    const handleLikeClick = (State) => {
+        if(State===false) {
+            setProcessLike(true);
+            postRoutes.postLike({postID : id , isLiked : true}).then((res)=>{
+                if(res.likeRequest==="successfull"){
+                    console.log("liked");
+                    setLikeState(true);
+                    setLikeButtonClass("lcs-blocks on-button");
+                }
+            }).catch(err => console.log({errorInLike: err})).finally(()=> setProcessLike(false));
+           
+        }else{
+            setProcessLike(true);
+            postRoutes.postLike({postID : id , isLiked : false}).then((res)=>{
+                if(res.likeRequest==="successfull"){
+                    console.log("disliked");
+                    setLikeState(false);
+                    setLikeButtonClass("lcs-blocks");
+                }
+            }).catch(err => console.log({errorInLike: err})).finally(()=> setProcessLike(false));
+
+        }
+        // if(State===true) {
+        //     setLikeState(false);
+            
+        // }      
     }
 
     const handleCommentClick = (State) => {
@@ -56,10 +93,11 @@ export default ({commentClicked}) => {
                     <ThumbUpAltIcon />
                 </div>
             <button className="lcs-button like-button">
-               
-
-                Like
+                Like <strong style={{"color":"grey"}}>{likes.length}</strong>
             </button>
+            {/* <div className="noOfLike">
+                <p>{likes.length}</p>
+            </div> */}
         </div>
 
         <div className={`${commentButtonClass} comment`} onClick={() => handleCommentClick(commentState)}>
