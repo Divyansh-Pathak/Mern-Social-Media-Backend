@@ -11,7 +11,8 @@ const customFields = {
 
 const verifyCallback = (username, password, done) => {
 
-    User.findOne({ contactDetails:{email : username} })
+
+    User.findOne({ "contactDetails.email" : username})
         .then((user) => {
 
             if (!user) { return done(null, false) }

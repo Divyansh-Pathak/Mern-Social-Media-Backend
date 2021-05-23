@@ -5,11 +5,9 @@ const userValidationSchema = yup.object({
     currentCity: yup.string().required("*current city is required"),
     profession: yup.string().required("*profession is required"),
     phone: yup.number().transform(value => (isNaN(value) ? undefined : value)),
-    hobbies: yup.array()
-        .min(1, 'Pick at least 1 tags'),
     bio: yup.string(),
-    community: yup.array()
-        .min(1, 'Pick at least 1 tags'),
+    interests: yup.array()
+        .min(3, 'Pick at least 3 interests you have'),
 
 });
 

@@ -20,13 +20,13 @@ const UserProfileForm = ({ renderPage, close }) => {
     useEffect(() => {
         //Calling communities options from the server and pushing it in communitiesOptions array such that it can be used with react-select
         dataRoutes.requestAllCommunities().then((response) => {
-            response.map((community) => {
+            response.map((interests) => {
                 communitiesOptions.push({
-                    value: community.communityName,
-                    label: community.communityName,
+                    value: interests.communityName,
+                    label: interests.communityName,
                 });
             });
-        }).catch(err => console.log("Something went wrong during calling community Data", err))
+        }).catch(err => console.log("Something went wrong during calling interests Data", err))
     }, []);
 
     const [isErr, setErr] = useState(false);
@@ -44,16 +44,11 @@ const UserProfileForm = ({ renderPage, close }) => {
     const handleFormPage = (buttonNumber) => {
         console.log("Next Clicked");
         if (buttonNumber === 0) {
-            console.log(isErr);
             setDivClass({ pageOne: "show-div", pageTwo: "no-div", pageThree: "no-div" });
             renderPage(0);
         } else if (buttonNumber === 1) {
-            if (!isErr) {
                 setDivClass({ pageOne: "no-div", pageTwo: "show-div", pageThree: "no-div" })
                 renderPage(1);
-
-            }
-
         } else if (buttonNumber === 2) {
             setDivClass({ pageOne: "no-div", pageTwo: "no-div", pageThree: "show-div" })
             renderPage(2);
@@ -74,9 +69,8 @@ const UserProfileForm = ({ renderPage, close }) => {
         currentCity: "",
         profession: "",
         phone: "",
-        hobbies: [],
         bio: "",
-        community: []
+        interests: []
     };
 
     //Creating Validation Schema
@@ -85,15 +79,9 @@ const UserProfileForm = ({ renderPage, close }) => {
         currentCity: yup.string().required("*current city is required"),
         profession: yup.string().required("*profession is required"),
         phone: yup.number().typeError('Amount must be a number'),
-        hobbies: yup.array().of(
-            yup.object().shape({
-                label: yup.string().required(),
-                value: yup.string().required(),
-            })
-        ),
         bio: yup.string(),
-        community: yup.array()
-            .min(1, 'Pick at least 1 tags')
+        interests: yup.array()
+            .min(3, 'Pick at least 3 interests you have')
             .of(
                 yup.object().shape({
                     label: yup.string().required(),
@@ -106,13 +94,17 @@ const UserProfileForm = ({ renderPage, close }) => {
     const handleSubmit = (values, { setSubmitting }) => {
         const userUpdatedData = {
             ...values,
-            community: values.community.map(t => t.value),
-            hobbies: values.hobbies.map(t => t.value)
+            interests: values.interests.map(t => t.value),
         }
-        userRoute.editProfileRequest(userUpdatedData);
-        console.log("Values of the formik form", { values });
-        close();
+        userRoute.editProfileRequest(userUpdatedData).then((res)=>{
+            if(res.data.isUpdated){
+                close();  
+            }else{
+                console.log("Error In updating", res);
+            }  
+        });
         setSubmitting(false);
+       
     };
 
 
@@ -139,16 +131,7 @@ const UserProfileForm = ({ renderPage, close }) => {
                                             <label style={{ "padding": "10px" }}><HomeIcon /></label>
                                             <Field placeHolder="Birth Place" type="text" name="birthPlace" />
                                         </div>
-                                        {/* <p><ErrorMessage name="currentCity" /></p> */}
-                                        <ErrorMessage name="currentCity">{msg => {
-                                            if (msg) {
-                                                console.log("Error from currenctCity", msg);
-                                                setErr(true);
-                                            } else {
-                                                console.log("No err from currentCity");
-                                            }
-                                            return (<p>{msg}</p>);
-                                        }}</ErrorMessage>
+                                        <p><ErrorMessage name="currentCity" /></p>
                                         <div style={{ "display": "flex" }}>
                                             <label style={{ "padding": "10px" }}><LocationOnIcon /></label>
                                             <Field placeHolder="Lives In*" type="text" name="currentCity" />
@@ -168,18 +151,8 @@ const UserProfileForm = ({ renderPage, close }) => {
                                     </div>
                                 </div>
                                 <div className="buttons">
-                                    <button disabled={isErr} onClick={() => {
-                                        setFieldTouched("birthPlace", true);
-                                        setFieldTouched("currentCity", true);
-                                        setFieldTouched("profession", true);
-                                        setFieldTouched("phone", true);
-                                        setErr(errors.birthPlace && touched.birthPlace || errors.currentCity && touched.currentCity || errors.profession && touched.profession
-                                            || errors.phone && touched.phone);
-
-                                        if (!isErr) {
-                                            console.log(isErr);
-                                            handleFormPage(1);
-                                        }
+                                    <button onClick={() => {
+                                        handleFormPage(1);
                                     }} type="button">Next</button>
                                 </div>
                             </div>
@@ -187,17 +160,17 @@ const UserProfileForm = ({ renderPage, close }) => {
                             <div className={`form__details ${divClass.pageTwo}`}>
                                 <div className="input-div">
                                     <div className="left-inputs">
-                                        <p><ErrorMessage name="community" /></p>
-                                        <div style={{ "display": "flex" }}>
+                                        <p><ErrorMessage name="interests" /></p>
+                                        <div style={{ "display": "flex", "margin-top":"10px" }}>
                                             <label style={{ "padding": "10px" }}><PeopleIcon /></label>
                                             <div className="my-select">
                                                 <MySelect
-                                                    name="community"
-                                                    values={values.community}
+                                                    name="interests"
+                                                    values={values.interests}
                                                     onChange={setFieldValue}
                                                     onBlur={setFieldTouched}
-                                                    error={errors.community}
-                                                    touched={touched.community}
+                                                    error={errors.interests}
+                                                    touched={touched.interests}
                                                     options={communitiesOptions}
                                                 />
                                             </div>
@@ -205,7 +178,7 @@ const UserProfileForm = ({ renderPage, close }) => {
                                     </div>
                                     <div className="right-inputs">
                                         <h2>This will help us to show you best contents suitable for you...</h2>
-                                        <p><ErrorMessage name="hobbies" /></p>
+                                        {/* <p><ErrorMessage name="hobbies" /></p>
                                         <div style={{ "display": "flex" }}>
                                             <label style={{ "padding": "10px" }}><SentimentVerySatisfiedIcon /></label>
                                             <div className="my-select">
@@ -219,12 +192,12 @@ const UserProfileForm = ({ renderPage, close }) => {
                                                     options={hobbiesOptions}
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                                 <div className="buttons">
-                                    {errors.community && touched.community || errors.hobies && touched.hobies ? setErr(true) : setErr(false)}
-                                    <button disabled={isErr} onClick={() => handleFormPage(2)} type="button">Next</button>
+                                    {errors.interests && touched.interests || errors.hobies && touched.hobies ? setErr(true) : setErr(false)}
+                                    <button onClick={() => handleFormPage(2)} type="button">Next</button>
                                 </div>
                                 <div className="prev-button">
                                     <button onClick={() => handleFormPage(0)} type="button">Prev</button>
@@ -286,7 +259,7 @@ export default UserProfileForm;
 
 //   <Select
 //                                                     {...field}
-//                                                     placeholder="Select Your Community..."
+//                                                     placeholder="Select Your interests..."
 //                                                     value={communitiesSelected}
 //                                                     onChange={handleCommunityChange}
 //                                                     defaultValue={""}
@@ -299,14 +272,57 @@ export default UserProfileForm;
 
 //-------------------------------------------------------Fieldd----------------------------------------------------------
 
-{/* <p> <ErrorMessage name="community" /></p>
+{/* <p> <ErrorMessage name="interests" /></p>
                                         <div style={{ "display": "flex" }}>
                                             <label style={{ "padding": "10px" }}><PeopleIcon /></label>
-                                            <Field placeHolder="Select Your Community" type="text" name="" />
+                                            <Field placeHolder="Select Your interests" type="text" name="" />
 
                                         </div> */}
-{/* <Field name="community" value="hello word">
+{/* <Field name="interests" value="hello word">
                                             {({ field, form, meta }) => (
                                                 
                                             )}
                                         </Field> */}
+
+
+
+
+
+                                        // setFieldTouched("birthPlace", true);
+                                        // setFieldTouched("currentCity", true);
+                                        // setFieldTouched("profession", true);
+                                        // setFieldTouched("phone", true);
+                                        // setErr(errors.birthPlace && touched.birthPlace || errors.currentCity && touched.currentCity || errors.profession && touched.profession
+                                        //     || errors.phone && touched.phone);
+
+                                        // if (!isErr) {
+                                        //     console.log(isErr);
+                                        //     handleFormPage(1);
+                                        // }
+
+
+
+
+
+
+
+                                        // <ErrorMessage name="currentCity">{msg => {
+                                        //     if (msg) {
+                                        //         console.log("Error from currenctCity", msg);
+                                        //         setErr(true);
+                                        //     } else {
+                                        //         console.log("No err from currentCity");
+                                        //     }
+                                        //     return (<p>{msg}</p>);
+                                        // }}</ErrorMessage>
+
+
+
+
+
+                                         // hobbies: yup.array().of(
+        //     yup.object().shape({
+        //         label: yup.string().required(),
+        //         value: yup.string().required(),
+        //     })
+        // ),

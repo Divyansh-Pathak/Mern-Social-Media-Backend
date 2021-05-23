@@ -50,45 +50,80 @@ router.post('/upload', upload.array('files'), async (req, res) => {
   console.log("Array should be multer", req.body);
   console.log("Array of files", req.files);
 
-  let filenameAsId = req.files[0].filename;
+  if(req.body.isMedia){
 
-  // crypto.randomBytes(16, (err, buf) => {
-  //   if (err) {
-  //     return reject(err);
-  //   }
-  //    filename = buf.toString('hex');
-  // });
+    let filenameAsId = req.files[0].filename;
 
-  let fileNames = [];
-  let contentType = [];
-  for (let i = 0; i < req.files.length; i++) {
-    fileNames.push(`/image/${req.files[i].filename}`);  
-    contentType.push(req.files[i].contentType); 
+   
+  
+    let fileNames = [];
+    let contentType = [];
+    for (let i = 0; i < req.files.length; i++) {
+      fileNames.push(`/image/${req.files[i].filename}`);  
+      contentType.push(req.files[i].contentType); 
+    }
+  
+    const postDetails = new Post(
+      {
+        isMedia: true,
+        postID: filenameAsId,
+        fileType: contentType,
+        postFileURL: fileNames, //to be set
+        caption: req.body.caption,
+        likes: 0,
+        dislikes: 0,
+        uploadedBy: {
+          userName: req.user.personalInformation.name,
+          currentCity: req.user.personalInformation.currentCity,
+          profileImageURL: req.user.profileImageURL,
+          userProfileURL: req.user.userProfileURL,
+        },
+        userProfileURL: "http://www.google.com",
+        views: 0,
+        date: new Date(),
+        tags: req.body.tags
+      });
+    postDetails.save();
+  
+    res.json({fileNames});
+
   }
 
-  const postDetails = new Post(
-    {
-      postID: filenameAsId,
-      fileType: contentType,
-      postFileURL: fileNames, //to be set
-      caption: req.body.caption,
-      likes: 0,
-      dislikes: 0,
-      uploadedBy: {
-        userName: req.user.personalInformation.name,
-        currentCity: req.user.personalInformation.currentCity,
-        profileImageURL: req.user.profileImageURL,
-        userProfileURL: req.user.userProfileURL,
-      },
-      userProfileURL: "http://www.google.com",
-      views: 0,
-      date: new Date(),
-      tags: req.body.tags
-    });
-  postDetails.save();
 
-  res.json({fileNames});
 });
+
+router.post('/uploadText', async (req, res) => {
+
+    
+    let filename =  crypto.randomBytes(32).toString('hex');
+
+    console.log({hello: req.body, file: filename});
+    
+
+    const postDetails = new Post(
+      {
+        isMedia: false,
+        postID: filename,
+        fileType: "text",
+        caption: req.body.caption,
+        likes: 0,
+        dislikes: 0,
+        uploadedBy: {
+          userName: req.user.personalInformation.name,
+          currentCity: req.user.personalInformation.currentCity,
+          profileImageURL: req.user.profileImageURL,
+          userProfileURL: req.user.userProfileURL,
+        },
+        views: 0,
+        date: new Date(),
+        tags: req.body.tags
+      });
+    postDetails.save();
+  
+    res.json({filename});
+
+  
+})
 
 router.post('/multipleUpload', upload.array('files'), async (req, res) => {
   console.log("Array should be here bu multer", req.body);
@@ -146,6 +181,21 @@ router.get('/posts', async (req, res) => {
     return res.json(post);
   }
 });
+
+// router.get('/selectedPosts', async (req, res) => {
+
+//   const selector = {tags: ""}
+//   const post = await Post.find();
+//   if (!post || post.length === 0) {
+//     res.status(404).json({
+//       err: "NO POST YET"
+//     });
+//   } else {
+
+
+//     return res.json(post);
+//   }
+// });
 
 // @route GET /image/:filename
 // @desc Display Image

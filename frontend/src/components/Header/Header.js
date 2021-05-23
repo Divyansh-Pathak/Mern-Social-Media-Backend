@@ -4,10 +4,9 @@ import "./Header.css";
 import Avatar from "@material-ui/core/Avatar";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
-import { grey, red } from "@material-ui/core/colors";
-import userContext from "../helpers/userContext";
-import logo from "../icons/logo.png";
-import icon from "../icons/icon.png";
+import userContext from "../../helpers/userContext";
+import logo from "../../icons/logo.png";
+import icon from "../../icons/icon.png";
 
 
 

@@ -27,6 +27,7 @@ export default {
                     password: password
                 }
             }).then((response) => {
+                console.log(response.data);
                 return (response.data);
             }).catch((error) => {
                return console.log(error);
@@ -46,14 +47,20 @@ export default {
                         dateOfBirth: date
                 }
             }).then((response) => {
+                console.log("response of register", response);
                 if(response.data.isSignUpSuccessfull){
                     userRoutes.postLoginRequest(response.data.email , response.data.password)
                     .then((res)=> {
-                        return res;
+                        //dekhna h abhi
                     })
+                    return {success: response.data.isSignUpSuccessfull};
                 }
-            }).catch(err => console.log(err))
-        )
+            }).catch(err => {
+                return {success: false, errMessege: err.response.data.error };
+            }
+               
+                
+        ));
     },
     editProfileRequest: async (profileData) => {
         return(
@@ -63,7 +70,7 @@ export default {
                 'data': profileData
                 
             }).then((response) => {
-                console.log(response);
+                return(response);
             }).catch(err => console.log(err))
         )
     }

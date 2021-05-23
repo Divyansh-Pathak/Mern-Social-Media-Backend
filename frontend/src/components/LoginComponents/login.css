@@ -37,6 +37,8 @@
 	margin: 15px 0;
 }
 
+
+
 .login_signup__page button {
 	border-radius: 20px;
 	border: 1px solid #FF4B2B;
@@ -82,7 +84,7 @@ button.ghost {
 	width: 100%;
 }
 
-.container {
+.login_signup-container {
 	background-color: #fff;
 	border-radius: 10px;
   	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
@@ -107,7 +109,7 @@ button.ghost {
 	z-index: 2;
 }
 
-.container.right-panel-active .sign-in-container {
+.login_signup-container.right-panel-active .sign-in-container {
 	transform: translateX(100%);
 }
 
@@ -129,7 +131,7 @@ button.ghost {
 	font-size: 70%;
 }
 
-.container.right-panel-active .sign-up-container {
+.login_signup-container.right-panel-active .sign-up-container {
 	transform: translateX(100%);
 	opacity: 1;
 	z-index: 5;
@@ -159,7 +161,7 @@ button.ghost {
 	z-index: 100;
 }
 
-.container.right-panel-active .overlay-container{
+.login_signup-container.right-panel-active .overlay-container{
 	transform: translateX(-100%);
 }
 
@@ -179,7 +181,7 @@ button.ghost {
 	transition: transform 0.6s ease-in-out;
 }
 
-.container.right-panel-active .overlay {
+.login_signup-container.right-panel-active .overlay {
   	transform: translateX(50%);
 }
 
@@ -202,7 +204,7 @@ button.ghost {
 	transform: translateX(-20%);
 }
 
-.container.right-panel-active .overlay-left {
+.login_signup-container.right-panel-active .overlay-left {
 	transform: translateX(0);
 }
 
@@ -211,7 +213,7 @@ button.ghost {
 	transform: translateX(0);
 }
 
-.container.right-panel-active .overlay-right {
+.login_signup-container.right-panel-active .overlay-right {
 	transform: translateX(20%);
 }
 

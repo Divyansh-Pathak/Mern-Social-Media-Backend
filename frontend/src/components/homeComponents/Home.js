@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-import Feed from "./homeComponents/Feed";
-import CreatePost from "./homeComponents/createPostComponents/CreatePost";
+import Feed from "./feedsComponents/Feed";
+import CreatePost from "./createPostComponents/CreatePost";
 import './Home.css';
-import CompleteUserProfile from './homeComponents/completeUserProfileComponents/CompleteUserProfile';
-import userContext from "../helpers/userContext";
+import CompleteUserProfile from './completeUserProfileComponents/CompleteUserProfile';
+import userContext from "../../helpers/userContext";
 import { Redirect, useHistory } from "react-router";
-// import InterestBox from "./homeComponents/interestBox";
+import LeftWidget from './widgetArea/LeftWidget';
+import SharePost from './createPostComponents/sharePost';
 
 
 
@@ -19,23 +20,28 @@ function Home() {
   useEffect(() => {
     console.log("user details from home", userDetails);
     if (userDetails.checkComplete) {
-      setProfileComplete(userDetails.checkComplete.community);
+      setProfileComplete(userDetails.checkComplete.interests);
     }
 
   }, [user]);
     return (
-      <div className="home">
+      <div className="home container">
         {(!profileComplete) ? <CompleteUserProfile close={() => setProfileComplete(true)} /> : <></>}
 
-        
+        <div className="home-body row">
 
-        <div className="home-body">
+          <div className="col-lg-3 order-2 order-lg-1">
+            <LeftWidget/>
+          </div>
 
-        {/* <InterestBox/> */}
-          <div className="home-center">
-            <CreatePost user={user} />
+          <div className="home-center col-lg-6 order-1 order-lg-2">
+            {/* <CreatePost user={user} /> */}
+            <SharePost user={user}/>
             <Feed user={user} />
           </div>
+
+          <div className="col-lg-3 order-3"></div>
+
 
         </div>
       </div>

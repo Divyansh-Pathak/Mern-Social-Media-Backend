@@ -1,0 +1,100 @@
+.share-post-main-div{
+    border: none;
+    border-radius: 0;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0px 1px 15px 0px rgb(51 51 51 / 20%);
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    align-items: center;
+}
+
+.share-post-selector-div{
+    color:#FF4B2B;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.share-post-select-button{
+    width: 25%;
+    border-radius: 20px;
+	border:none;
+	background-color: #FF4B2B;
+    padding: 0 10px;
+    margin: 0;
+	font-size: 12px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: transform 80ms ease-in;
+    cursor: pointer;
+    box-shadow: 0px 1px 15px 0px rgb(51 51 51 / 20%); 
+}
+
+/* .share-post-select-button {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 28px;
+    padding: 20px;
+    width: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+  } */
+  
+  .share-post-select-button div {
+    color: white;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    background-color:#FF4B2B;
+    align-items: center;
+    border-radius: 5px;
+  }
+  
+  .share-post-select-button div:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+  
+  .share-post-select-button:hover div {
+    padding-right: 20px;
+  }
+  
+  .share-post-select-button:hover div:after {
+    opacity: 1;
+    right: 0;
+  }
+
+.share-post-select-button-content{
+    color: white;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    background-color:#FF4B2B;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.share-post-select-button-content>p{
+    padding: 0;
+    margin: 0;
+}

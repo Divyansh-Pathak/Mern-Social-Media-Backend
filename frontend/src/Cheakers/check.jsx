@@ -1,9 +1,10 @@
 import React from 'react';
-import CompleteUserProfile from './components/homeComponents/completeUserProfileComponents/CompleteUserProfile'; 
+import CompleteUserProfile from "../components/homeComponents/completeUserProfileComponents/CompleteUserProfile"; 
+import SignUpForm from '../components/LoginComponents/signupForm';
 import './check.css';
 
 export default () => {
-    return <CompleteUserProfile skip = {()=>console.log("skip")}/>
+    return <SignUpForm />
 };
 
 
@@ -29,4 +30,4 @@ export default () => {
 
 
 
-//
+//<CompleteUserProfile skip = {()=>console.log("skip")}/>

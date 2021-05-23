@@ -1,16 +1,15 @@
 import React from 'react';
 import './login.css';
 import { useState } from 'react';
+import SignUpForm from './signupForm';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import userRoutes from '../apiCall/user';
-// import History from '../helpers/History';
+import userRoutes from '../../apiCall/user';
 import { Redirect, useHistory } from 'react-router-dom';
-import Auth from '../helpers/auth';
 
 const Login = ({ reRunGetUser, loggedInState }) => {
 
-	const [panel, changePanel] = useState("container");
+	const [panel, changePanel] = useState("login_signup-container");
 	const [loginFormValue, setLoginFormValue] = useState({});
 	const [signupFormValue, setSignupFormValue] = useState({});
 	const [dateOfBirth, setDateOfBirth] = useState(new Date());
@@ -68,10 +67,12 @@ const Login = ({ reRunGetUser, loggedInState }) => {
 
 	return <div className="login_signup__page">
 		<h2>Welcome to Passion World</h2>
-		<div className={panel} id="container">
+		<div className={panel} id="login_signup-container">
 			<div className="form-container sign-up-container">
 
-				<form onChange={changedSignupForm} action="#">
+		
+
+				{/* <form onChange={changedSignupForm} action="#">
 					<h1>Create Account</h1>
 
 					<span>use your email for registration</span>
@@ -99,7 +100,9 @@ const Login = ({ reRunGetUser, loggedInState }) => {
 							})
 					}} >
 						Sign Up</button>
-				</form>
+				</form> */}
+
+				<SignUpForm setLog={(val) => loggedInState(val)} />
 
 			</div>
 			<div className="form-container sign-in-container">
@@ -133,12 +136,12 @@ const Login = ({ reRunGetUser, loggedInState }) => {
 					<div className="overlay-panel overlay-left">
 						<h1>Welcome Back!</h1>
 						<p>To keep connected with us please login with your personal info</p>
-						<button className="ghost" id="signIn" onClick={() => changePanel("container")}>Sign In</button>
+						<button className="ghost" id="signIn" onClick={() => changePanel("login_signup-container")}>Sign In</button>
 					</div>
 					<div className="overlay-panel overlay-right">
 						<h1>Hello, Friend!</h1>
 						<p>Enter your personal details and start journey with us</p>
-						<button className="ghost" id="signUp" onClick={() => changePanel("container right-panel-active")}>Sign Up</button>
+						<button className="ghost" id="signUp" onClick={() => changePanel("login_signup-container right-panel-active")}>Sign Up</button>
 					</div>
 				</div>
 			</div>

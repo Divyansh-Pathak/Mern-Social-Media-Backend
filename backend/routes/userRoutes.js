@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require('passport');
-const {validateUserDetails}= require("../Middlewares/validationMiddleware");
+const {validateUserDetails, validateEmail}= require("../Middlewares/validationMiddleware");
 const {
   addUser,
   sendUser,
@@ -9,9 +9,13 @@ const {
 } = require("../routeHandlers/userHandler");
 
 
-router.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success' }));
+router.post('/login',(req, res, next)=>{
+  console.log(req.body);
+  next();
 
-router.post('/register', addUser);
+}, passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success' }));
+
+router.post('/register', validateEmail, addUser);
 
 router.post('/editProfile', validateUserDetails, editUser);
 

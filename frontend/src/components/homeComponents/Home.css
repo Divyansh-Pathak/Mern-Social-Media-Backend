@@ -1,13 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
-.home-body {
+/* .home-body {
     margin: -20px 0 20px;
     display: flex;
     width: 100vw;
     flex-direction: row;
     justify-content: center;
-  }
+  } */
 
-.home-center{
+/* .home-center{
   min-width: 40%;
+} */
+
+figure {
+  margin: 0;
+  
 }
+

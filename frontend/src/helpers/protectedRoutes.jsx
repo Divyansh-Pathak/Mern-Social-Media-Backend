@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import Auth from '../helpers/auth';
 
 
 export default ({ component: Component, isAuthenticated: isAuthenticated, ...rest }) => {

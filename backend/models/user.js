@@ -23,7 +23,8 @@ const userSchema = mongoose.Schema({
   userProfileURL: String,
   followers : [],
   following : [],
-  community : []
+  community : [],
+  interests: [],
   
 });
 

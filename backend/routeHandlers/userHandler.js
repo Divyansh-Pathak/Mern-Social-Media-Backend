@@ -55,20 +55,20 @@ const editUser = async (req, res) => {
       ...req.user.contactDetails,
       phone : req.body.phone   //unique
     },
-    hobbies : req.body.hobbies,
     Bio : req.body.Bio,
     // profileImageURL : req.body.profileImageURL,
     // coverImageURL : req.body.coverImageURL,
     // userProfileURL: req.body.userProfileURL,
     followers : [],
     following : [],
-    community : req.body.community
+    community : req.body.community,
+    interests: req.body.interests,
     
   }, (err , details) => {
     if(err){
-      res.json({"Error in Updating details" : "" })
+      res.json({isUpdated: false})
     }else{
-      res.json({details});
+      res.json({isUpdated: true});
 
     }
   });
@@ -87,12 +87,10 @@ const sendUser = (req, res) => {
     const checkComplete = {
       personalInformation: false,
       contactDetails: false,
-      hobbies: false,
+      interests: false,
       Bio: false,
       profileImageURL: false,
       coverImageURL: false,
-      following: false,
-      community: false,
     }
 
     if (!(req.user.personalInformation.birthPlace === undefined ||
@@ -105,9 +103,6 @@ const sendUser = (req, res) => {
     if (req.user.contactDetails.phone !== undefined) {
       checkComplete.contactDetails = true;
     }
-    if (req.user.hobbies.length !== 0) {
-      checkComplete.hobbies = true;
-    }
     if (req.user.Bio !== undefined || req.user.Bio === "") {
       checkComplete.Bio = true;
     }
@@ -117,11 +112,8 @@ const sendUser = (req, res) => {
     if (req.user.coverImageURL !== undefined) {
       checkComplete.coverImageURL = true;
     }
-    if (req.user.following.length !== 0) {
-      checkComplete.following = true;
-    }
-    if (req.user.community.length !== 0) {
-      checkComplete.community = true;
+    if (req.user.interests.length !== 0) {
+      checkComplete.interests = true;
     }
 
     const currentUser = {
@@ -137,13 +129,11 @@ const sendUser = (req, res) => {
         phone: req.user.contactDetails.phone   //unique
       },
       checkComplete: checkComplete,
-      hobbies: req.user.hobbies,
+      interests: req.user.interests,
       Bio: req.user.Bio,
       profileImageURL: req.user.profileImageURL,
       coverImageURL: req.user.coverImageURL,
       userProfileURL: req.user.userProfileURL,
-      followers: req.user.followers,
-      following: req.user.following,
       community: req.user.community
     };
     res.send(currentUser);

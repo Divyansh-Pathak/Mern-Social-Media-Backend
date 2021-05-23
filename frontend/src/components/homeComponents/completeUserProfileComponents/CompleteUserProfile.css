@@ -16,9 +16,7 @@
     opacity: 0.3;
     height: 100vh;
     width: 100vw;
-    z-index: 10;
-  
-
+    z-index: 10; 
 }
 
 .cup__head{
@@ -39,7 +37,7 @@
 }
 
 
-.progress-bar{
+.step-bar{
     display: flex;
     justify-content: center;
 }
@@ -47,12 +45,10 @@
     background-color: #FF4B2B;
 }
 
-.progress-bar div{
+.step-bar div{
         border-radius: 25px;
-        border: 2px solid grey;
-        
-        margin: 10px 10px;
-        /* padding: 20px; */
+        border: 2px solid grey;    
+        margin: 10px 10px;    
         width: 25%;
         height: 5px;
 }

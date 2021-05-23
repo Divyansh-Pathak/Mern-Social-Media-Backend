@@ -36,8 +36,8 @@ function CompleteUserProfile({ close }) {
                     {/* <button>skip</button>
                     <button onClick={() => skip()} >skip all</button> */}
                 </div>
-                <div className = "progress-bar ">
-                        <div className = {activeBar.pageOne}></div>
+                <div className = "step-bar ">
+                        <div className={activeBar.pageOne}></div>
                         <div className={activeBar.pageTwo}></div>
                         <div className={activeBar.pageThree}></div>
                 </div>

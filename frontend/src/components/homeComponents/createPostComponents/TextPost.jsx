@@ -1,18 +1,16 @@
 import React, { useState } from "react";
-import "./CreatePost.css";
-import CameraAltIcon from "@material-ui/icons/CameraAlt";
+import "./TextPost.css";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import postRoutes from '../../../apiCall/posts';
 import SelectTags from './selectTag';
 
-function CreatePost({ user }) {
+function TextPost({ user }) {
 
   const [progress, setProgress] = useState(100);
   const [tagIsTouched , setTagTouched] = useState(false);
   const [tags , setTags] = useState([]);
   // let tags = new Array;
   function getTags(values) {
-      console.log("from cricket",values);
       setTags(values);  
   }
 
@@ -35,28 +33,13 @@ function CreatePost({ user }) {
     { value: 'Public Speaking', label: 'Public Speaking' }])
 
 
-  const [images, setImages] = useState(null);
-  const [prevImage, setPrev] = useState([]);
-  const fileSelected = (event) => {
-    setImages(event.target.files);
-    setPrev([...event.target.files]);
-    console.log({images: prevImage});
-  };
-
-
-  function uploadFile(getfile, caption, tags, userName, setProgress) {
-    if(getfile){
-      postRoutes.postPosts(getfile, caption, tags, userName, setProgress, true);
+  function uploadFile(caption, tags, userName, setProgress) {
+    if(caption!==""){
+      postRoutes.postText(caption, tags, userName, setProgress);
     }else{
-      alert("Please select an image...");
+      alert("Write in the textarea!");
     }
    
-  };
-
-  function deleteFile(e) {
-    const s = prevImage.filter((item, index) => index !== e);
-    setPrev(s);
-    console.log(s);
   };
 
   return (
@@ -66,12 +49,10 @@ function CreatePost({ user }) {
           <div className="imageUpload">
 
             <div className="createAPost__Top">
-              <p>Create a Post</p>
+              <p>What's in your mind? Share Here!!!!!</p>
             </div>
 
             <div className="createAPost__center">
-              {/* <Tagdropdown reciveTags={getTags} /> */}
-
               <SelectTags
                 name="tags"
                 onChange={getTags}
@@ -86,22 +67,13 @@ function CreatePost({ user }) {
               <textarea
                 className="createAPost__textarea"
                 name="create a post"
-                rows="2"
+                rows="4"
                 value={textArea}
-                placeholder="Enter a caption..."
+                placeholder="Share Your Thoughts..."
                 onChange={(event) => textAreaChanged(event)}
               ></textarea>
 
-              <div className="imagePreview">
-                {prevImage ?
-                  prevImage.map((image, i) => <div key={i} display="flex" flexDirection="row">
-                    <img src={URL.createObjectURL(image)} onClick={() => console.log("Preview Image Clicked")} id="image-1-preview" alt="imagePreview" />
-                    <button type="button" onClick={() => deleteFile(i)}>
-                      delete
-                </button>
-                  </div>
-                  )
-                  : <></>}
+              {/* <div className="imagePreview">
                 {progress === 100 ? (
                   <></>
                 ) : (
@@ -111,31 +83,13 @@ function CreatePost({ user }) {
                     value={progress}
                   />
                 )}
-              </div>
+              </div> */}
             </div>
 
             <div className="imageUpload__bottom">
-              <div className="image-upload">
-                <label htmlFor="file-input">
-                  <CameraAltIcon style={{ marginTop: "5px" }} />
-                </label>
-
-                <input
-                  id="file-input"
-                  type="file"
-                  accept="image/*,video/*"
-                  name="file"
-                  onChange={(e) => fileSelected(e)}
-                  multiple='multiple'
-                />
-
-              </div>
-
-              {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
-
               <button
                 className="button"
-                onClick={() => uploadFile(images, textArea, tags, user, setProgress)}
+                onClick={() => uploadFile(textArea, tags, user, setProgress)}
                 disabled= {tagIsTouched&&(tags.length===0)}
               >
                 Upload
@@ -161,7 +115,7 @@ function CreatePost({ user }) {
   );
 }
 
-export default CreatePost;
+export default TextPost;
 
 
 

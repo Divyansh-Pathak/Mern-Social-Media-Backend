@@ -1,5 +1,6 @@
 const yup = require('yup');
 const  userValidationSchema = require('../Validations/userValidations');
+const User = require("../models/user");
 
 
 const validateUserDetails = (req, res, next) => {
@@ -12,11 +13,36 @@ const validateUserDetails = (req, res, next) => {
     .catch((error)=> res.json(`User Validity Error ${error}`));
 }
 
+const validateEmail = (req, res, next) => {
+    let flag = true;
+    User.find((err , data)=>{
+        if(err){
+            console.log("err from validate email", err);
+        }else{
+            data.map((user)=>{
+                if(user.contactDetails.email=== req.body.email){
+                    flag=false;
+                    res.status(400).json({
+                        error: "Email already exist"
+                      });
+                    // res.json({error: "Email already exist"})
+                }
+            })
+        }
+    }).then((data) => {
+        if(flag){
+            next();
+        }
+        
+    });
+
+};
 
 
 
 
-module.exports = {validateUserDetails};
+
+module.exports = {validateUserDetails, validateEmail};
 
 // const product1 = {
 //   id: 1,

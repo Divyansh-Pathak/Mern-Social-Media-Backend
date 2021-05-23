@@ -1,0 +1,333 @@
+<html>
+  <head>
+
+   
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="videoPlayer.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
+
+    <!-- <style>
+
+.plyr__video-embed iframe {
+    border: 0;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 100%;
+}
+
+
+      .plyr--video .plyr__controls {
+    background: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.7));
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+    bottom: 0;
+    color: #fff;
+    left: 0;
+    padding: 20px 5px 5px;
+    position: absolute;
+    right: 0;
+    transition: opacity .4s ease-in-out,transform .4s ease-in-out;
+    z-index: 3;
+}
+
+.plyr__video-wrapper {
+    background: #000;
+    border-radius: inherit;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+}
+.plyr__video-embed {
+    height: 0;
+    padding-bottom: 56.25%;
+    position: relative;
+}
+
+.plyr__controls {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    text-align: center;
+}
+.plyr--full-ui *, .plyr--full-ui ::after, .plyr--full-ui ::before {
+    box-sizing: inherit;
+}
+
+
+.plyr--video {
+    border-radius: 5px;
+}
+.plyr--video {
+    background: #000;
+    overflow: hidden;
+}
+.plyr--full-ui {
+    box-sizing: border-box;
+}
+
+.plyr--full-ui *, .plyr--full-ui ::after, .plyr--full-ui ::before {
+    box-sizing: inherit;
+}
+.plyr {
+    -moz-osx-font-smoothing: auto;
+    -webkit-font-smoothing: subpixel-antialiased;
+    direction: ltr;
+    font-family: Avenir,"Avenir Next","Helvetica Neue","Segoe UI",Helvetica,Arial,sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    line-height: 1.7;
+    max-width: 100%;
+    min-width: 200px;
+    position: relative;
+    text-shadow: none;
+    transition: box-shadow .3s ease;
+}
+
+.plyr button {
+    font: inherit;
+    line-height: inherit;
+    width: auto;
+}
+.plyr__control {
+    background: 0 0;
+    border: 0;
+    border-radius: 3px;
+    color: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+    overflow: visible;
+    padding: 7px;
+    position: relative;
+    transition: all .3s ease;
+}
+
+.plyr--full-ui *, .plyr--full-ui ::after, .plyr--full-ui ::before {
+    box-sizing: inherit;
+}
+
+.plyr__controls {
+    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    text-align: center;
+}
+
+.plyr--full-ui.plyr--video .plyr__control--overlaid {
+    display: block;
+}
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+    cursor: pointer;
+}
+.plyr--full-ui a, .plyr--full-ui button, .plyr--full-ui input, .plyr--full-ui label {
+    touch-action: manipulation;
+}
+.plyr button {
+    font: inherit;
+    line-height: inherit;
+    width: auto;
+}
+.plyr__control--overlaid {
+    opacity: 0;
+    visibility: hidden;
+}
+.plyr__control--overlaid {
+    background: rgba(26,175,255,.8);
+    border: 0;
+    border-radius: 100%;
+    box-shadow: 0 1px 1px rgb(0 0 0 / 15%);
+    color: #fff;
+    display: none;
+    left: 50%;
+    padding: 15px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 2;
+}
+
+.plyr__volume {
+    align-items: center;
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+.main-video{
+  width: 600px;
+  height: 500px;
+}
+
+.plyr__poster {
+  background-image: url(https://img.youtube.com/vi/WeA7edXsU40/maxresdefault.jpg);
+    background-color: #000;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 100%;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    transition: opacity .2s ease;
+    width: 100%;
+    z-index: 1;
+} -->
+
+
+    <!-- </style> -->
+  </head>
+
+<body>
+<div class="main-video">
+
+  <div
+  class="plyr plyr--full-ui plyr--video plyr--youtube plyr--fullscreen-enabled plyr--paused plyr--stopped plyr__poster-enabled">
+  <div class="plyr__controls">
+    <button type="button" class="plyr__control" data-plyr="play" aria-label="Play">
+      <svg class="icon--pressed" role="presentation" focusable="false">
+        <use xlink:href="#plyr-pause"></use>
+      </svg>
+      <svg class="icon--not-pressed" role="presentation" focusable="false">
+        <use xlink:href="#plyr-play"></use>
+      </svg>
+      <span class="label--pressed plyr__sr-only">Pause</span>
+      <span class="label--not-pressed plyr__sr-only">Play</span>
+    </button>
+    <div class="plyr__progress">
+      <input data-plyr="seek" type="range" min="0" max="100" step="0.01" value="0" autocomplete="off" role="slider"
+        aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="plyr-seek-3439"
+        style="--value:0%;" />
+      <progress class="plyr__progress__buffer" min="0" max="100" value="0" role="progressbar" aria-hidden="true">%
+        buffered</progress>
+      <span class="plyr__tooltip">00:00</span>
+    </div>
+    <div class="plyr__time plyr__time--current" aria-label="Current time">-02:24</div>
+    <div class="plyr__volume">
+      <button type="button" class="plyr__control" data-plyr="mute">
+        <svg class="icon--pressed" role="presentation" focusable="false">
+          <use xlink:href="#plyr-muted"></use>
+        </svg>
+        <svg class="icon--not-pressed" role="presentation" focusable="false">
+          <use xlink:href="#plyr-volume"></use>
+        </svg>
+        <span class="label--pressed plyr__sr-only">Unmute</span>
+        <span class="label--not-pressed plyr__sr-only">Mute</span>
+      </button>
+      <input data-plyr="volume" type="range" min="0" max="1" step="0.05" value="1" autocomplete="off" role="slider"
+        aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" id="plyr-volume-3439"
+        aria-valuetext="100.0%" style="--value:100%;" />
+    </div>
+    <button type="button" class="plyr__control" data-plyr="captions">
+      <svg class="icon--pressed" role="presentation" focusable="false">
+        <use xlink:href="#plyr-captions-on"></use>
+      </svg>
+      <svg class="icon--not-pressed" role="presentation" focusable="false">
+        <use xlink:href="#plyr-captions-off"></use>
+      </svg>
+      <span class="label--pressed plyr__sr-only">Disable captions</span>
+      <span class="label--not-pressed plyr__sr-only">Enable captions</span>
+    </button>
+    <div class="plyr__menu">
+      <button aria-haspopup="true" aria-controls="plyr-settings-3439" aria-expanded="false"
+        type="button" class="plyr__control" data-plyr="settings">
+        <svg role="presentation" focusable="false">
+          <use xlink:href="#plyr-settings"></use>
+        </svg>
+        <span class="plyr__sr-only">Settings</span>
+      </button>
+      <div class="plyr__menu__container" id="plyr-settings-3439" hidden="">
+        <div>
+          <div id="plyr-settings-3439-home">
+            <div role="menu">
+              <button data-plyr="settings" type="button" class="plyr__control plyr__control--forward" role="menuitem"
+                aria-haspopup="true" hidden="">
+                <span>
+                  Captions<span class="plyr__menu__value">Disabled</span>
+                </span>
+              </button>
+              <button data-plyr="settings" type="button" class="plyr__control plyr__control--forward" role="menuitem"
+                aria-haspopup="true" hidden="">
+                <span>Quality<span class="plyr__menu__value">undefined</span></span>
+              </button>
+              <button data-plyr="settings" type="button" class="plyr__control plyr__control--forward" role="menuitem"
+                aria-haspopup="true">
+                <span>Speed<span class="plyr__menu__value">Normal</span></span>
+              </button>
+            </div>
+          </div>
+          <div id="plyr-settings-3439-captions" hidden="">
+            <button type="button" class="plyr__control plyr__control--back">
+              <span aria-hidden="true">Captions</span><span class="plyr__sr-only">Go back to previous menu</span>
+            </button>
+            <div role="menu"></div>
+          </div>
+          <div id="plyr-settings-3439-quality" hidden="">
+            <button type="button" class="plyr__control plyr__control--back">
+              <span aria-hidden="true">Quality</span>
+              <span class="plyr__sr-only">Go back to previous menu</span>
+            </button>
+            <div role="menu"></div>
+          </div>
+          <div id="plyr-settings-3439-speed" hidden="">
+            <button type="button" class="plyr__control plyr__control--back">
+              <span aria-hidden="true">Speed</span>
+              <span class="plyr__sr-only">Go back to previous menu</span>
+            </button>
+            <div role="menu"><button data-plyr="speed" type="button" role="menuitemradio" class="plyr__control"
+                aria-checked="false" value="0.5"><span>0.5×</span></button><button data-plyr="speed" type="button"
+                role="menuitemradio" class="plyr__control" aria-checked="false"
+                value="0.75"><span>0.75×</span></button><button data-plyr="speed" type="button" role="menuitemradio"
+                class="plyr__control" aria-checked="true" value="1"><span>Normal</span></button><button
+                data-plyr="speed" type="button" role="menuitemradio" class="plyr__control" aria-checked="false"
+                value="1.25"><span>1.25×</span></button><button data-plyr="speed" type="button" role="menuitemradio"
+                class="plyr__control" aria-checked="false" value="1.5"><span>1.5×</span></button><button
+                data-plyr="speed" type="button" role="menuitemradio" class="plyr__control" aria-checked="false"
+                value="1.75"><span>1.75×</span></button><button data-plyr="speed" type="button" role="menuitemradio"
+                class="plyr__control" aria-checked="false" value="2"><span>2×</span></button></div>
+          </div>
+        </div>
+      </div>
+    </div><button type="button" class="plyr__control" data-plyr="pip"><svg role="presentation" focusable="false">
+        <use xlink:href="#plyr-pip"></use>
+      </svg><span class="plyr__sr-only">PIP</span></button><button type="button" class="plyr__control"
+      data-plyr="fullscreen"><svg class="icon--pressed" role="presentation" focusable="false">
+        <use xlink:href="#plyr-exit-fullscreen"></use>
+      </svg><svg class="icon--not-pressed" role="presentation" focusable="false">
+        <use xlink:href="#plyr-enter-fullscreen"></use>
+      </svg><span class="label--pressed plyr__sr-only">Exit fullscreen</span><span
+        class="label--not-pressed plyr__sr-only">Enter fullscreen</span></button>
+  </div>
+  <div class="plyr__video-wrapper plyr__video-embed" style="padding-bottom: 56.25%;"><iframe id="youtube-4602"
+      frameborder="0" allowfullscreen="1"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      title="Player for " width="640" height="360"
+      src="https://www.youtube.com/embed/WeA7edXsU40?autoplay=0&amp;controls=0&amp;disablekb=1&amp;playsinline=1&amp;cc_load_policy=0&amp;cc_lang_pref=auto&amp;widget_referrer=https%3A%2F%2Fdemo.hasthemes.com%2Fadda-preview%2Fadda%2Findex.html&amp;noCookie=false&amp;rel=0&amp;showinfo=0&amp;iv_load_policy=3&amp;modestbranding=1&amp;enablejsapi=1&amp;origin=https%3A%2F%2Fdemo.hasthemes.com&amp;widgetid=2"></iframe>
+    <div class="plyr__poster"
+      style="background-image: url(&quot;https://img.youtube.com/vi/WeA7edXsU40/maxresdefault.jpg&quot;);"></div>
+  </div>
+  <button type="button" class="plyr__control plyr__control--overlaid" data-plyr="play" aria-label="Play"><svg
+      role="presentation" focusable="false">
+      <use xlink:href="#plyr-play"></use>
+    </svg><span class="plyr__sr-only">Play</span></button>
+</div>
+
+
+</div>
+ 
+</body>
+
+</html>

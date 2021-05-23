@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Post from "./feedsComponents/Post";
+import PostCard from "./PostCard";
 import "./Feed.css";
-import postRoutes from '../../apiCall/posts';
-import { constants } from "crypto";
+import postRoutes from '../../../apiCall/posts';
 
 function Feed({ user }) {
   const [posts, setPosts] = useState([]);
@@ -28,19 +27,14 @@ function Feed({ user }) {
 
   }, []);
 
- 
-
-
   //If Data is Loading....
-
-
   const loadComponent = (posts) => {
 
     if(posts.length !== 0){
       return  <div className="feed">
       <div className="feed__posts">
         {posts.map((post, i) => (
-          <Post
+          <PostCard
             key={i}
             id={post.postID}
             userProfileUrl={post.uploadedBy.userProfileUrl}
@@ -50,7 +44,6 @@ function Feed({ user }) {
             caption={post.caption}
             comments={post.CommentBox}
             user={user}
-            // {post.uploadedBy.personalInformation.name,,, post.uploadedBy.userProfileUrl,,,,post.uploadedBy.userName}
           />
         ))}
       </div>
@@ -64,11 +57,6 @@ function Feed({ user }) {
     }
 
   }
-
-  
-
-
-
   return (
     isLoading? <h1>Loading...</h1> : loadComponent(posts)
   );

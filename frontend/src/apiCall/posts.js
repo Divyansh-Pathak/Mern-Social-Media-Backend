@@ -28,11 +28,31 @@ export default {
         formData.append("caption", caption);
         formData.append("tags", tags);
         formData.append("uploadedBy", userName);
-
        return( multipartInstance({
             'method':'POST',
             'url':'/upload',
             'data': formData,
+            onUploadProgress: function (progressEvent) {
+                let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                setProgress(percentCompleted);
+                console.log("This IS progress event", percentCompleted);
+              },
+        }) .then((response) => {
+          console.log(response);
+        }).catch((error) => {
+          console.log(error);
+        }));
+      },
+
+      postText: async ( caption, tags, userName, setProgress) => {
+       return( instance({
+            'method':'POST',
+            'url':'/uploadText',
+            'data': {
+              caption: caption,
+              tags: tags,
+              userName: userName,
+            },
             onUploadProgress: function (progressEvent) {
                 let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                 setProgress(percentCompleted);

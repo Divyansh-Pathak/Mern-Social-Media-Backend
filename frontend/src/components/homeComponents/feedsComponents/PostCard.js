@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Post.css";
+import "./PostCard.css";
 import Avatar from "@material-ui/core/Avatar";
 import CommentInput from "./CommentInput";
 import Comment from "./Comment";
@@ -31,38 +31,41 @@ function Post({ id, userName, postImageUrl, postFileType, caption, comments, use
   }
 
   return (
-    <div className="post">
-      <div className="post__header">
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
+    <div className="post card">
+      <div className="post__header align-items-center d-flex">
+
+        <div class="profile-thumb">
           <Avatar
             alt={userName.toLowerCase()}
-            style={{ height: "25px", width: "25px" }}
+          // style={{ height: "25px", width: "25px" }}
           >
             {userName.charAt(0)}
+
           </Avatar>
 
-          <div className="post__headerInfo">
-            <p style={{ fontSize: "14px" }}>{userName}</p>
-          </div>
         </div>
+
+
+
+
+        <div className="post-author">
+          <h6 class="author">
+            <a href="/userProfile">{userName}</a>
+          </h6>
+          <span class="post-time">20 min ago</span>
+        </div>
+
       </div>
 
 
-      {/* headr --> avatar + username + time */}
-      <div className="post__bottom">
-        <p>{caption}</p>
-      </div>
+      {/* caption */}
+      <div className="post-content">
+        <p className="post-desc">{caption}</p>
 
-      {/* file Iterator */}
+        
 
-      {(postImageUrl.length !== 0) ?
-
+        {/* Image Iterator */}
+        {(postImageUrl.length > 1) ?
         <div className="iterator-button">
           <button disabled={postIterator === 0} onClick={() => handleIterator('prev')}>
             prev
@@ -73,16 +76,47 @@ function Post({ id, userName, postImageUrl, postFileType, caption, comments, use
         </div>
         : <></>}
 
-      {/* image */}
+        {/* image */}
 
-      {(postFileType[postIterator] === "video/mp4") ?
-        <video controls>
-          <source src={`http://localhost:4000${postImageUrl[postIterator]}`} type="video/mp4" />
-        Your browser does not support the video tag.
-        </video> : <img className="post__image" src={`http://localhost:4000${postImageUrl[postIterator]}`} />
-      }
 
-      <LikeCommentShare commentClicked={showCommentInput} />
+          {postFileType[0]==="text"? 
+          <></>:
+          
+        <div class="post-thumb-gallery">
+
+        
+
+
+
+
+          {(postFileType[postIterator] === "video/mp4") ?
+
+            <figure class="post-thumb video-popup">
+
+              <video controls>
+                <source src={`http://localhost:4000${postImageUrl[postIterator]}`} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+
+
+            </figure>
+
+            : <figure class="post-thumb img-popup">
+              <a href={`http://localhost:4000${postImageUrl[postIterator]}`}>
+                <img src={`http://localhost:4000${postImageUrl[postIterator]}`} alt="post image" />
+              </a>
+            </figure>
+          }
+        </div>}
+      </div>
+
+      <div class="post-meta">
+
+        <LikeCommentShare commentClicked={showCommentInput} />
+
+      </div>
+
+
 
       {(commentInput) ? <CommentInput id={id} user={user} getComment={addComment} /> : <></>}
 
@@ -130,3 +164,27 @@ export default Post;
     <h5><strong>{userName}</strong></h5>
   <p>{caption}</p>
 </div> */}
+
+
+
+
+
+// <button class="post-meta-like">
+//           <i class="bi bi-heart-beat"></i>
+//           <span>You and 201 people like this</span>
+//           <strong>201</strong>
+//         </button>
+//         <ul class="comment-share-meta">
+//           <li>
+//             <button class="post-comment">
+//               <i class="bi bi-chat-bubble"></i>
+//               <span>41</span>
+//             </button>
+//           </li>
+//           <li>
+//             <button class="post-share">
+//               <i class="bi bi-share"></i>
+//               <span>07</span>
+//             </button>
+//           </li>
+//         </ul>

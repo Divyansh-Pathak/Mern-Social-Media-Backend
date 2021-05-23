@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+.userProfile{
+    background-color: white;
+}
+
+.userProfile *{
+	margin: 0;
+	padding: 0;
+	font-family: 'Poppins', sans-serif;
+}
+
+.logo{
+		display: flex;
+		align-items: center;
+}
+
+.option{
+/*		display: flex;
+		flex-direction: row;*/
+		padding: 5px;
+}
+
+.userProfile a{
+	text-decoration: none;
+	margin-right: 30px;
+}
+.userProfile a, .userProfile i{
+	color: white;
+}
+
+.user{
+		display: flex;
+		align-items: center;	
+}
+
+
+
+#row{
+	display: flex;
+	justify-content: center;
+	flex-direction: row;
+	/*align-items: center;*/
+	margin: 50px 150px;
+    background-color: white;
+}
+.left{
+	flex: 25%;
+	padding: 50px;
+	text-align: center;
+}
+
+.userProfile img{
+	width: 250px;
+	height: 250px;
+	border-radius: 10px;
+	
+}
+
+.userProfile h3{
+	opacity: 80%;
+}
+
+.userProfile button{
+	padding: 8px 18px;
+	margin-top: 10px;
+	background-color: #457BCC;
+	color: white;
+	border: none;
+	border-radius: 10px; 
+	font-size: 20px;
+	cursor: pointer;
+}
+.right{
+	flex: 70%;
+	padding: 50px;
+
+}
+.userProfile hr{
+	width: 10%;
+	margin: 10px 0px;
+}
+
+.userProfile p{
+	opacity: 50%;
+	margin-bottom: 10px;
+}
+
+#customers {
+  
+ width:100%;
+ 
+}
+
+#customers td, #customers th {
+  opacity: 50%;
+  padding: 8px;
+}
+
+
+
+@media (max-width: 360px) {
+  .nav {
+    flex-direction: column;
+    align-items: center;
+
+  }
+/*  .option{
+  	flex-direction: column;
+  	
+  }*/
+
+
+#row{
+	flex-direction: column;
+	margin: 0px;
+}
+}
+
+
+/*#customers tr:hover {background-color: #ddd;}*/
+
+/*#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+ 
+}*/

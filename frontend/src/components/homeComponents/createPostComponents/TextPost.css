@@ -1,0 +1,113 @@
+.app__createPost{
+    width: 100%;
+  }
+  
+  .imageUpload {
+    background-color: white;
+    /* max-width: 600px; */
+    /* width: 100%; */
+    width: 100%;
+    margin-top: 30px;
+    padding: 16px 0px;
+  }
+  
+  .imageUpload__bottom button {
+      border-radius: 20px;
+      border: 1px solid #FF4B2B;
+      background-color: #FF4B2B;
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 12px 45px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: transform 80ms ease-in;
+  }
+  
+  button:active {
+      transform: scale(0.95);
+  }
+  
+  button:focus {
+      outline: none;
+  }
+  
+  .imageUpload__bottom button:disabled,
+  .imageUpload__bottom button[disabled]{
+    border: 1px solid #ff9380;
+      background-color: #ff9380;
+      color: #FFFFFF;
+  }
+  
+  .createAPost__Top {
+    margin: 0px 16px;
+    padding: 0px;
+  }
+  
+  .createAPost__Top>p{
+    margin: 0px;
+    text-align: center;
+  }
+  
+  .image-upload > input {
+    display: none;
+  }
+  
+  .createAPost__center {
+    margin: 0px 16px;
+  }
+
+  .createAPost__center>textarea{
+      background-color: #eeeeee;
+  }
+  
+  .imageUpload__bottom {
+    display: flex;
+    margin: 0px 16px;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .createAPost__textarea {
+    border: none;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 8px;
+  }
+  
+  .createAPost__textarea {
+    border: none;
+  }
+  
+  .createAPost__textarea:focus {
+    outline: none;
+  }
+  
+  .button {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .button:focus {
+    outline: none;
+  }
+  
+  .imagePreview {
+    margin-top: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .circularProgress {
+    margin-left: 8px;
+  }
+  
+  #image-1-preview {
+    display:inline-block;
+    max-height: 60px;
+    position: relative;
+    border-radius: 5px;
+  }
+  
