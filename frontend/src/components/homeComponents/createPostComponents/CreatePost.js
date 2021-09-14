@@ -1,38 +1,71 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./CreatePost.css";
 import CameraAltIcon from "@material-ui/icons/CameraAlt";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import postRoutes from '../../../apiCall/posts';
 import SelectTags from './selectTag';
+import dataRoutes from '../../../apiCall/dataFromBackend';
+import { useHistory } from "react-router-dom";
+import { Button, IconButton, makeStyles } from "@material-ui/core";
+import { SnackbarContext } from "../../HelperComponents/snackbar";
+import PostAddIcon from '@material-ui/icons/PostAdd';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    backgroundColor: '#FF4B2B',
+    borderRadius: 20,
+    border: 0,
+    color: 'white',
+    fontSize: "80%",
+    height: 40,
+    padding: '0 15px',
+    width: "25%",
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    overflow: "hidden",
+    margin: "5px"
+  },
+}));
+
+
+
 
 function CreatePost({ user }) {
 
+  const classes = useStyles();
+  const setStateSnackbarContext = useContext(SnackbarContext);
+  const history = useHistory();
+
   const [progress, setProgress] = useState(100);
-  const [tagIsTouched , setTagTouched] = useState(false);
-  const [tags , setTags] = useState([]);
-  // let tags = new Array;
+
+  const [tagIsTouched, setTagTouched] = useState(false);
+  const [tags, setTags] = useState([]);
   function getTags(values) {
-      console.log("from cricket",values);
-      setTags(values);  
+    console.log("from cricket", values);
+    setTags(values);
   }
-
-
-
 
   const [textArea, setTextArea] = useState("");
   const textAreaChanged = (event) => {
     setTextArea(event.target.value);
   };
 
-  const [tagsOptions, setTagOptions] = useState(
-    [{ value: 'Reading Books', label: 'Reading Books' },
-    { value: 'Football', label: 'Foodball' },
-    { value: 'Cricket', label: 'Cricket' },
-    { value: 'Painting', label: 'Painting' },
-    { value: 'Photography', label: 'Photography' },
-    { value: 'Mathematics', label: 'Mathematics' },
-    { value: 'Travel', label: 'Travel' },
-    { value: 'Public Speaking', label: 'Public Speaking' }])
+  const [tagsOptions, setTagOptions] = useState([]);
+
+  useEffect(() => {
+
+    //Calling communities options from the server and pushing it in communitiesOptions array such that it can be used with react-select
+    dataRoutes.requestAllCommunities()
+      .then((response) => {
+        response.map((interests) => {
+          tagsOptions.push({
+            value: interests.communityName,
+            label: interests.communityName,
+          });
+        });
+      })
+      .catch(err => console.log("Something went wrong during calling interests Data", err))
+  }, []);
 
 
   const [images, setImages] = useState(null);
@@ -40,17 +73,21 @@ function CreatePost({ user }) {
   const fileSelected = (event) => {
     setImages(event.target.files);
     setPrev([...event.target.files]);
-    console.log({images: prevImage});
   };
 
 
-  function uploadFile(getfile, caption, tags, userName, setProgress) {
-    if(getfile){
+  function uploadFile(getfile, prevImage, caption, tags, userName, setProgress) {
+
+    if (getfile&&(prevImage.length!==0)) {
       postRoutes.postPosts(getfile, caption, tags, userName, setProgress);
-    }else{
-      alert("Please select an image...");
+      window.location.reload();
+    } else {
+      setStateSnackbarContext(
+        true,
+        "Please select an image...",
+        "warning"
+      );
     }
-   
   };
 
   function deleteFile(e) {
@@ -61,26 +98,23 @@ function CreatePost({ user }) {
 
   return (
     <div className="app__createPost">
+    
       {user ? (
-        <div className="App">
           <div className="imageUpload">
 
             <div className="createAPost__Top">
-              <p>Create a Post</p>
+              <p>What's in your mind? Share Here!!!!!</p>
             </div>
 
             <div className="createAPost__center">
-              {/* <Tagdropdown reciveTags={getTags} /> */}
-
               <SelectTags
                 name="tags"
                 onChange={getTags}
                 onBlur={(value) => setTagTouched(value)}
                 options={tagsOptions}
               />
-
-              {(tagIsTouched&&(tags.length===0))&&
-                <p>*Select atleast one tag</p>
+              {(tagIsTouched && (tags.length === 0)) &&
+                <p style={{color:"red"}}>*Select atleast one tag</p>
               }
 
               <textarea
@@ -88,29 +122,29 @@ function CreatePost({ user }) {
                 name="create a post"
                 rows="2"
                 value={textArea}
-                placeholder="Enter a caption..."
+                placeholder="   Enter a caption..."
                 onChange={(event) => textAreaChanged(event)}
               ></textarea>
 
               <div className="imagePreview">
                 {prevImage ?
-                  prevImage.map((image, i) => <div key={i} display="flex" flexDirection="row">
-                    <img src={URL.createObjectURL(image)} onClick={() => console.log("Preview Image Clicked")} id="image-1-preview" alt="imagePreview" />
-                    <button type="button" onClick={() => deleteFile(i)}>
-                      delete
-                </button>
+                  prevImage.map((image, i) => 
+                  <div key={i} display="flex" flexDirection="row">
+                    <img src={URL.createObjectURL(image)} 
+                    onClick={() => console.log("Preview Image Clicked")} 
+                    id="image-1-preview" 
+                    alt="imagePreview" 
+                    />
+
+                    <IconButton aria-label="delete" onClick={() => deleteFile(i)}>
+                      <DeleteIcon />
+                    </IconButton>
+
                   </div>
                   )
                   : <></>}
-                {progress === 100 ? (
-                  <></>
-                ) : (
-                  <CircularProgress
-                    className="circularProgress"
-                    variant="determinate"
-                    value={progress}
-                  />
-                )}
+
+               
               </div>
             </div>
 
@@ -131,18 +165,39 @@ function CreatePost({ user }) {
 
               </div>
 
+              {progress === 100 ? (
+                  <></>
+                ) : (
+                  <CircularProgress
+                    className="circularProgress"
+                    variant="determinate"
+                    value={progress}
+                  />
+                )}
+
               {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
 
-              <button
+              <Button
+                color="#FF4B2B"
+                variant="contained"
+                className={classes.button}
+                startIcon={<PostAddIcon />}
+                onClick={() => uploadFile(images, prevImage, textArea, tags, user, setProgress)}
+                disabled={(tags.length === 0)}
+              >
+                Post
+              </Button>
+
+              {/* <button
                 className="button"
                 onClick={() => uploadFile(images, textArea, tags, user, setProgress)}
                 disabled= {tagIsTouched&&(tags.length===0)}
               >
                 Upload
-              </button>
+              </button> */}
             </div>
           </div>
-        </div>
+       
       ) : (
         <div
           style={{

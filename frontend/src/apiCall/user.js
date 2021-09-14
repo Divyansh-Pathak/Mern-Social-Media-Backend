@@ -27,12 +27,27 @@ export default {
                     password: password
                 }
             }).then((response) => {
-                console.log(response.data);
                 return (response.data);
             }).catch((error) => {
-               return console.log(error);
+               return {errMessege: error.response.data };
             })
-        )
+        );
+    },
+
+    logoutRequest: async () => {
+        return (
+            await instance({
+                'method':'GET',
+                'url':'/logout',
+            })
+            .then((response)=>{
+                return (response.data);
+            })
+            .catch((error) => {
+                return {errMessege: error.response.data};
+            })
+        );
+
     },
 
     postSignupRequest: async (email , password, name , date) => {
@@ -56,7 +71,7 @@ export default {
                     return {success: response.data.isSignUpSuccessfull};
                 }
             }).catch(err => {
-                return {success: false, errMessege: err.response.data.error };
+                return {success: false, errMessege: err.response.data };
             }
                
                 

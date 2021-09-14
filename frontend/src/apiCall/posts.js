@@ -2,6 +2,7 @@ import instance, {multipartInstance} from './instance';
 
 export default {
     getPosts: async () =>{
+     
         return (
             await instance({
                 'method':'GET',
@@ -11,13 +12,58 @@ export default {
                 },
             })	.then((response) => {
                 if(response.status === 200){
+                 
                 const posts= response.data;
                 return(posts);
                 }else{
+                
                   return("NO POST YET");
                 } 
               }).catch(err => "No Post Yet")
         );
+    },
+
+    getUsersPost: async() => {
+
+      return (
+        
+        await instance({
+            'method':'GET',
+            'url':"/userPost",
+            'params': {
+                'search':'parameter',
+            },
+        })	.then((response) => {
+            if(response.status === 200){
+            const posts= response.data;
+            return(posts);
+            }else{
+              return("NO POST YET");
+            } 
+          }).catch(err => "No Post Yet")
+    );
+
+    },
+
+    getCommunityPosts: async (communityName) => {
+      return (
+        
+        await instance({
+            'method':'GET',
+            'url':`/communitypost/${communityName}`,
+            'params': {
+                'search':'parameter',
+            },
+        })	.then((response) => {
+            if(response.status === 200){
+            const posts= response.data;
+            return(posts);
+            }else{
+              return("NO POST YET");
+            } 
+          }).catch(err => "No Post Yet")
+    );
+      
     },
 
     postPosts: async (getfile, caption, tags, userName, setProgress) => {
@@ -25,9 +71,13 @@ export default {
         for (let i = 0; i < getfile.length; i++) {
           formData.append('files', getfile[i])
         }
+        for (let i = 0; i < tags.length; i++) {
+          formData.append("tags", tags[i]);
+        }
         formData.append("caption", caption);
-        formData.append("tags", tags);
+        // formData.append("tags", tags);
         formData.append("uploadedBy", userName);
+        console.log({thisIsFormDataFrom:formData});
        return( multipartInstance({
             'method':'POST',
             'url':'/upload',

@@ -1,10 +1,12 @@
 import React from 'react';
 import CompleteUserProfile from "../components/homeComponents/completeUserProfileComponents/CompleteUserProfile"; 
 import SignUpForm from '../components/LoginComponents/signupForm';
+import RenderAvatar from '../components/userProfilePageComponents/changeProfileImage';
+import CropperBox from '../components/userProfilePageComponents/CropperBox';
 import './check.css';
 
 export default () => {
-    return <SignUpForm />
+    return <CropperBox />;
 };
 
 

@@ -3,9 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 
+import RenderSnackbar from './components/HelperComponents/snackbar';
+
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+  <RenderSnackbar>
+      <App/>
+  </RenderSnackbar>
+    
   </React.StrictMode>,
   document.getElementById('root')
 );

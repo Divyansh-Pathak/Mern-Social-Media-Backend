@@ -9,6 +9,10 @@ import userRoute from '../apiCall/user';
 import userContext from '../helpers/userContext';
 import ProtectedRoute from '../helpers/protectedRoutes';
 import userProfilePage from './userProfilePageComponents/userProfilePage';
+import Community from './CommunityComponent/Community';
+import AboutUs from './AboutUs/aboutus';
+import ContactUs from './AboutUs/contactus';
+import CommunityPage from './CommunityComponent/CommunityPage';
 
 function App() {
 
@@ -86,6 +90,10 @@ function App() {
               <Route exact path='/check' component={Cheak} />
               <ProtectedRoute exact path="/home" component={Home} isAuthenticated={isLoggedIn} Cheakingone={"Check This also"} />
               <Route exact path='/userProfile' component={userProfilePage} />
+              <Route exact path='/community' component={Community} />
+              <Route exact path='/AboutUs' component={AboutUs} />
+               <Route exact path='/ContactUs' component={ContactUs} />
+               <Route path="/communityPage" component={CommunityPage} />
             </Switch>
 
           </div>

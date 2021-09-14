@@ -17,3 +17,29 @@ figure {
   
 }
 
+.home-main-container{
+  margin-top: 20px;
+  background-color: white;
+  width: 80%;
+  margin: 0;
+}
+
+.home-body{
+  display: flex;
+  justify-content: center;
+  /* flex-wrap: nowrap !important; */
+
+}
+
+@media only screen and (max-width : 991px) {
+	/* Styles */
+  .home-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* flex-wrap: nowrap !important; */
+  
+  }
+	}
+
+

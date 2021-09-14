@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
 const Post = require('../models/posts');
 const crypto = require("crypto");
+const User = require("../models/user");
+const passport = require('passport');
 
 const connection = mongoose.connection;
 
@@ -18,6 +20,29 @@ connection.once('open', () => {
 });
 
 const upload = multer({ storage });
+
+
+router.post('/uploadProfileImage', upload.single('file'), async (req, res) => {
+
+  let filename = req.file.filename;
+
+  gfs.remove({filename: req.user.profileImageURL , root: "uploads"}, (err, gridStore)=>{
+    if(err){
+      console.log(err);
+    }
+  });
+
+  await User.findByIdAndUpdate(req.user._id, { profileImageURL: filename },
+    function (err, docs) {
+      if (err) {
+        res.status(400).json({isProfileUpdated: false});
+      }
+      else {
+        res.status(200).json({isProfileUpdated: true});
+      }
+    });
+
+});
 
 // @route GET /
 // @desc Loads form
@@ -47,88 +72,79 @@ router.get('/', (req, res) => {
 // @desc  Uploads file to DB
 router.post('/upload', upload.array('files'), async (req, res) => {
 
-  console.log("Array should be multer", req.body);
-  console.log("Array of files", req.files);
+  let filenameAsId = req.files[0].filename;
+  let fileNames = [];
+  let contentType = [];
+  for (let i = 0; i < req.files.length; i++) {
+    fileNames.push(`/image/${req.files[i].filename}`);
+    contentType.push(req.files[i].contentType);
+  }
+  const postDetails = new Post(
+    {
+      isMedia: true,
+      postID: filenameAsId,
+      fileType: contentType,
+      postFileURL: fileNames, //to be set
+      caption: req.body.caption,
+      likes: [],
+      dislikes: 0,
+      uploadedBy: {
+        userName: req.user.personalInformation.name,
+        currentCity: req.user.personalInformation.currentCity,
+        profileImageURL: req.user.profileImageURL,
+        userProfileURL: req.user.userProfileURL,
+        userEmail: req.user.contactDetails.email,
+      },
+      userProfileURL: "http://www.google.com",
+      views: 0,
+      date: new Date(),
+      tags: req.body.tags
+    });
+  postDetails.save();
 
- 
+  res.json({ fileNames });
 
-    let filenameAsId = req.files[0].filename;
 
-   
-  
-    let fileNames = [];
-    let contentType = [];
-    for (let i = 0; i < req.files.length; i++) {
-      fileNames.push(`/image/${req.files[i].filename}`);  
-      contentType.push(req.files[i].contentType); 
-    }
-  
-    const postDetails = new Post(
-      {
-        isMedia: true,
-        postID: filenameAsId,
-        fileType: contentType,
-        postFileURL: fileNames, //to be set
-        caption: req.body.caption,
-        likes: [],
-        dislikes: 0,
-        uploadedBy: {
-          userName: req.user.personalInformation.name,
-          currentCity: req.user.personalInformation.currentCity,
-          profileImageURL: req.user.profileImageURL,
-          userProfileURL: req.user.userProfileURL,
-        },
-        userProfileURL: "http://www.google.com",
-        views: 0,
-        date: new Date(),
-        tags: req.body.tags
-      });
-    postDetails.save();
-  
-    res.json({fileNames});
-
-  
 
 
 });
 
 router.post('/uploadText', async (req, res) => {
 
-    
-    let filename =  crypto.randomBytes(32).toString('hex');
 
-    console.log({hello: req.body, file: filename});
-    
+  let filename = crypto.randomBytes(32).toString('hex');
 
-    const postDetails = new Post(
-      {
-        isMedia: false,
-        postID: filename,
-        fileType: "text",
-        caption: req.body.caption,
-        likes: [],
-        dislikes: 0,
-        uploadedBy: {
-          userName: req.user.personalInformation.name,
-          currentCity: req.user.personalInformation.currentCity,
-          profileImageURL: req.user.profileImageURL,
-          userProfileURL: req.user.userProfileURL,
-        },
-        views: 0,
-        date: new Date(),
-        tags: req.body.tags
-      });
-    postDetails.save();
-  
-    res.json({filename});
 
-  
+  const postDetails = new Post(
+    {
+      isMedia: false,
+      postID: filename,
+      fileType: "text",
+      caption: req.body.caption,
+      likes: [],
+      dislikes: 0,
+      uploadedBy: {
+        userName: req.user.personalInformation.name,
+        currentCity: req.user.personalInformation.currentCity,
+        profileImageURL: req.user.profileImageURL,
+        userProfileURL: req.user.userProfileURL,
+        userEmail: req.user.contactDetails.email,
+      },
+      views: 0,
+      date: new Date(),
+      tags: req.body.tags
+    });
+  postDetails.save();
+
+  res.json({ filename });
+
+
 });
 
 router.post('/multipleUpload', upload.array('files'), async (req, res) => {
   console.log("Array should be here bu multer", req.body);
   console.log("Array file", req.files);
-  res.json({ file: req.files, body: req.body});
+  res.json({ file: req.files, body: req.body });
 });
 
 
@@ -139,22 +155,22 @@ router.post('/multipleUpload', upload.array('files'), async (req, res) => {
 router.post("/like", async (req, res) => {
   const filter = { postID: req.body.postID };
   let result = await Post.findOne(filter);
-  if(req.body.isLiked){
-    console.log({condition: req.body.isLiked});
+  if (req.body.isLiked) {
+    console.log({ condition: req.body.isLiked });
     result.likes.push(req.user.contactDetails.email);
 
-  }else{
-    console.log({condition: result.likes});
-    result.likes= result.likes.filter((email) => email!==req.user.contactDetails.email);
-    
+  } else {
+    console.log({ condition: result.likes });
+    result.likes = result.likes.filter((email) => email !== req.user.contactDetails.email);
+
   }
-  
-  result.save().then(()=>{
 
-    res.json({likeRequest: "successfull"});
+  result.save().then(() => {
 
-  }).catch(err => res.json({likeRequest: "unsuccessfull"}))
-  
+    res.json({ likeRequest: "successfull" });
+
+  }).catch(err => res.json({ likeRequest: "unsuccessfull" }))
+
 
 });
 
@@ -170,6 +186,7 @@ router.post("/comment", async (req, res) => {
       currentCity: req.user.personalInformation.currentCity,
       profileImageURL: req.user.profileImageURL,
       userProfileURL: req.user.userProfileURL,
+      userEmail: req.user.contactDetails.email,
     },
     comment: req.body.comment
   });
@@ -198,20 +215,16 @@ router.get('/files', (req, res) => {
 
 router.get('/posts', async (req, res) => {
 
-  const checker = ["Photography", "Reading Books"];
+  const defaultChecker = ["Photography", "Reading Books", "Music", "Dance", "Coding", "Computer Science", "Books", "Novels",
+  "Sports", "Cricket", "Football", "Travel", "Science", "Mathematics", "Motivation", "Gym", "Technology", "Politics"];
 
-  const filter = { tags : { $in : checker }};
+  const checker = req.user.interests;
+
+
+  const filter = { tags: { $in: checker } };
 
   const post = await Post.find(filter);
 
-  // array.sort(function(a,b){
-  //   // Turn your strings into dates, and then subtract them
-  //   // to get a value that is either negative, positive, or zero.
-  //   return new Date(b.date) - new Date(a.date);
-  // });
-
-
- 
   if (!post || post.length === 0) {
     res.status(404).json({
       err: "NO POST YET"
@@ -223,20 +236,51 @@ router.get('/posts', async (req, res) => {
   }
 });
 
-// router.get('/selectedPosts', async (req, res) => {
-
-//   const selector = {tags: ""}
-//   const post = await Post.find();
-//   if (!post || post.length === 0) {
-//     res.status(404).json({
-//       err: "NO POST YET"
-//     });
-//   } else {
+router.get('/communitypost/:communityName', async (req, res) => {
 
 
-//     return res.json(post);
-//   }
-// });
+   const { communityName } = req.params;
+  
+  const selector = {tags: { $in: communityName }}
+  const post = await Post.find(selector);
+  if (!post || post.length === 0) {
+    res.status(404).json({
+      err: "NO POST YET"
+    });
+  } else {
+
+
+    return res.json(post);
+  }
+});
+
+router.get('/userPost', async (req, res) => {
+
+
+ 
+
+  // await User.find({"contactDetails.email": userEmail}).then((user) => {
+  //   console.log(user);
+
+  //   return res.json(user);
+  // });
+
+  let userEmail = req.user.contactDetails.email;
+
+  
+  
+  const selector = {"uploadedBy.userEmail": userEmail}
+  const post = await Post.find(selector);
+  if (!post || post.length === 0) {
+    res.status(404).json({
+      err: "NO POST YET"
+    });
+  } else {
+
+
+    return res.json(post);
+  }
+});
 
 // @route GET /image/:filename
 // @desc Display Image

@@ -1,19 +1,31 @@
 const express = require("express");
 const router = express.Router();
-const passport = require('passport');
-const {validateUserDetails, validateEmail}= require("../Middlewares/validationMiddleware");
+const { validateUserDetails, validateEmail } = require("../Middlewares/validationMiddleware");
 const {
   addUser,
   sendUser,
-  editUser
+  editUser,
+  login,
 } = require("../routeHandlers/userHandler");
 
 
-router.post('/login',(req, res, next)=>{
-  console.log(req.body);
-  next();
+// router.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success' }));
+// router.post('/login', passport.authenticate('local', 
 
-}, passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: '/login-success' }));
+// function(err, user, info){
+//   console.log({error: err , user: user , info: info});
+//   if (err) { console.log({errorInLogin: err}); }
+//   if (!user) { 
+//     console.log(info);
+//       res.status(401);
+//       res.end(info);
+//       return;
+//   }
+//   res.status(200).json({isLoggedIn: true})
+//   //createSendToken(req.user, res);
+// }));
+
+router.post('/login', login);
 
 router.post('/register', validateEmail, addUser);
 
@@ -31,11 +43,11 @@ router.get('/', (req, res) => {
 });
 
 router.get('/login-failure', (req, res) => {
-  res.json({isLoggedIn: false});
+  res.json({ isLoggedIn: false });
 });
 
 router.get('/login-success', (req, res) => {
-  res.json({isLoggedIn: true});
+  res.json({ isLoggedIn: true });
 });
 
 

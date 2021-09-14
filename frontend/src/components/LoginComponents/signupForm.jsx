@@ -1,17 +1,25 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import React, { useContext, useState } from 'react';
+import DatePicker, { CalendarContainer } from 'react-datepicker';
 import { useHistory } from 'react-router';
 import userRoutes from '../../apiCall/user';
 import * as yup from "yup";
+import { SnackbarContext } from '../HelperComponents/snackbar';
+
+
+
+// const useStyles = makeStyles((theme) => ({
+
+// }));
 
 
 
 
 
 
-const SignupForm = ({setLog}) => {
+const SignupForm = ({ setLog }) => {
   const [dateOfBirth, setDateOfBirth] = useState(false);
+  const setStateSnackbarContext = useContext(SnackbarContext);
 
   const History = useHistory();
 
@@ -26,30 +34,33 @@ const SignupForm = ({setLog}) => {
     email: yup.string().email('*Must be a valid email').max(255).required('*Email is required...'),
     password: yup.string().required('*Set your password').min(4, '*Must be at least 6 characters long'),
     name: yup.string().required("*Enter Your Name..."),
-    dob: yup.date().required("*Birthday is required..."),
-   
-});
+    dob: yup.date("*invalid date").transform(value => (isNaN(value) ? undefined : value)).required("*Birthday is required..."),
+
+  });
 
   function handleSubmit(values, { setSubmitting }) {
 
-    // alert(`"Email": ${values.email}, "Password": ${values.password}," NAme": ${values.name}, "DOB": ${values.dob}`);
-
     userRoutes.postSignupRequest(values.email, values.password, values.name, values.dob)
       .then((res) => {
+        console.log({ res })
         if (res.success) {
-          console.log("Logged in Block" , res);
+          console.log("Logged in Block", res);
           setLog("loggedIn");
           History.push('/');
         } else {
-          alert(res.errMessege);
-          History.push('/login');
+          setStateSnackbarContext(
+            true,
+            res.errMessege.error,
+            "warning"
+          );
         }
       })
     setSubmitting(false);
   }
+
+
   return (
 
-    
     <Formik
       initialValues={initialValues}
       validationSchema={validation}
@@ -62,7 +73,7 @@ const SignupForm = ({setLog}) => {
         setFieldTouched,
         isSubmitting, }) => <Form>
 
-        <h1>Create Account</h1>
+          <h1>Create Account</h1>
 
           <ErrorMessage name="name" />
           <div style={{ "display": "flex" }}>
@@ -70,26 +81,26 @@ const SignupForm = ({setLog}) => {
             <Field placeHolder="Enter Your Name..." type="text" name="name" />
           </div>
 
-
           <ErrorMessage name="dob" />
           <div>
             <Field name="dob">
               {({ field, form, meta }) => (
                 <div>
-                  <div style={{ "display": "flex" }}>
+                  <div style={{ "display": "flex", overflow: "visible" }}>
                     {/* <label>Date Of Birth</label> */}
-                    <DatePicker {...field} selected={dateOfBirth} placeholderText="Your Birthday" onChange={newDate => {
-                      setFieldValue("dob", newDate);
-                      setDateOfBirth(newDate);
-                    }} />
+                    <DatePicker {...field} selected={dateOfBirth} placeholderText="Your Birthday"
+                      autoComplete='off'
+                      dateFormat="dd/MM/yyyy"
+                      isClearable
+                      onChange={newDate => {
+                        setFieldValue("dob", newDate);
+                        setDateOfBirth(newDate);
+                      }} />
                   </div>
-                  {/* {meta.touched &&
-                    meta.error && <div className="error">{meta.error}</div>} */}
                 </div>
               )}
             </Field>
           </div>
-
 
           <ErrorMessage name="email" />
           <div style={{ "display": "flex" }}>
@@ -103,15 +114,11 @@ const SignupForm = ({setLog}) => {
             <Field placeHolder="Set Password..." type="password" name="password" />
           </div>
 
-
-          <button disabled={isSubmitting} type="submit">
+          <button className="my-login-button" disabled={isSubmitting} type="submit">
             Sign Up
           </button>
 
-          
-
         </Form>
-
 
       }
 

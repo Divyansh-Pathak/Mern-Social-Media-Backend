@@ -28,6 +28,7 @@ const postSchema = mongoose.Schema({
         currentCity: String,
         profileImageURL : String,
         userProfileURL: String,
+        userEmail: String,
 
     },
     

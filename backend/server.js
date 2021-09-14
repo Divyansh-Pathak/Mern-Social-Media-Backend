@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: __dirname+'/config.env' });
 const express = require('express');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -9,34 +9,43 @@ const userRoutes = require("./routes/userRoutes");
 const postsRoutes = require('./routes/postsRoute');
 const dataRoutes = require('./routes/dataRoutes');
 const cors = require('cors');
+const gfs = require("./config/db").gfs;
 
-
-
-connectDB();
-
-const connection = mongoose.connection;
-
-
-const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 
+
+//------------------------------------Connect To database--------------------------------------------------
+
+connectDB();
+const connection = mongoose.connection;
+const MongoStore = require('connect-mongo')(session);
+
+
+//------------------------------------Essential Middlewares-----------------------------------------------
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+
 
 //-------------------------Enable CORS----------------------------------
 
 const corsOptions ={
     origin:'http://localhost:3000', 
     methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
+    //headers: ["Origin", "X-Requested-With", "Content-Type", "Accept", "authorization"],
+    credentials:true,            //access-control-allow-credentials:true 
+    optionsSuccessStatus: 200  
 }
+
 app.use(cors(corsOptions));
 
 
 
 //-------------------------Session Setup---------------------------
+
+
 
 const sessionStore = new MongoStore({ mongooseConnection: connection, collection: 'sessions' });
 
@@ -64,10 +73,14 @@ app.use((req, res, next) => {
 
 //------------------------------Routes---------------------------------------
 
-app.use(userRoutes);
+
 app.use(postsRoutes);
 app.use(dataRoutes);
+app.use(userRoutes);
 
+
+
+//--------------------------------Create Server--------------------------------------
 
 
 const PORT = process.env.PORT || 5000 ;

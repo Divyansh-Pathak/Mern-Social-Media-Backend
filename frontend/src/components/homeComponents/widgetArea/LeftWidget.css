@@ -1,32 +1,4 @@
-.profile-banner-small {
-    position: relative;
-  }
-  
-  .profile-banner-small::before {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    content: '';
-    position: absolute;
-    pointer-events: none;
-    /* border: 10px solid rgba(198, 165, 107, 0.3); */
-  }
-  
-  .profile-thumb-2 {
-    width: 80px;
-    height: 80px;
-    display: block;
-    border-radius: 50%;
-    overflow: hidden;
-    bottom: -40px;
-    left: 0;
-    right: 0;
-    position: absolute;
-    margin: auto;
-  }
-  
-  .profile-desc {
-    padding: 30px;
-    margin-top: 25px;
-  }
+.profile-card {
+  font-family: sans-serif;
+  text-align: center;
+}

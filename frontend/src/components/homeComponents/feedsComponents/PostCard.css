@@ -54,6 +54,18 @@
   padding-top: 10px;
 }
 
+.iterator-button{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.iterator-bar-element{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .comment-box{
   background-color: #FFEFEF;
   max-height: 150px;
@@ -88,13 +100,19 @@
   position: relative;
 }
 
+.post-thumb{
+  display: flex;
+  justify-content: center;
+}
+
 .post-thumb-gallery {
   border-radius: 5px;
   overflow: hidden;
 }
 
 .post-thumb img {
-  width: 100%;
+  /* width: 100%; */
+  max-height: 300px;
 }
 
 .post-thumb video {

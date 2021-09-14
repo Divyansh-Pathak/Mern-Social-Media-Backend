@@ -14,28 +14,23 @@ const validateUserDetails = (req, res, next) => {
 }
 
 const validateEmail = (req, res, next) => {
-    let flag = true;
-    User.find((err , data)=>{
-        if(err){
-            console.log("err from validate email", err);
-        }else{
-            data.map((user)=>{
-                if(user.contactDetails.email=== req.body.email){
-                    flag=false;
-                    res.status(400).json({
-                        error: "Email already exist"
-                      });
-                    // res.json({error: "Email already exist"})
-                }
-            })
+    User.find({"contactDetails.email": req.body.email})
+    .then((user)=>{
+        if(user.length){
+            res.status(400).json({
+                isSignUpSuccessfull: false,
+                error: "Email already exist"
+              });
         }
-    }).then((data) => {
-        if(flag){
+        else{
             next();
         }
-        
-    });
+    })
+    .catch((err) => res.status(500).json({serverError: "Something went wrong on our side"}));
 
+
+
+    
 };
 
 
@@ -65,3 +60,31 @@ module.exports = {validateUserDetails, validateEmail};
 // productSchema
 //   .isValid(product2)
 //   .then((isValid) => console.log(`product2 valid? ${isValid}`));
+
+
+
+
+
+//=======================================================================================================
+
+
+// User.find((err , data)=>{
+    //     if(err){
+    //         console.log("err from validate email", err);
+    //     }else{
+    //         data.map((user)=>{
+    //             if(user.contactDetails.email=== req.body.email){
+    //                 flag=false;
+    //                 res.status(400).json({
+    //                     error: "Email already exist"
+    //                   });
+    //                 // res.json({error: "Email already exist"})
+    //             }
+    //         })
+    //     }
+    // }).then((data) => {
+    //     if(flag){
+    //         next();
+    //     }
+        
+    // });

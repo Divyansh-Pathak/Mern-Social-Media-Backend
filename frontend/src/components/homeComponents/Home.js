@@ -7,6 +7,7 @@ import userContext from "../../helpers/userContext";
 import { Redirect, useHistory } from "react-router";
 import LeftWidget from './widgetArea/LeftWidget';
 import SharePost from './createPostComponents/sharePost';
+import RightWidget from './widgetArea/RightWidget';
 
 
 
@@ -20,18 +21,19 @@ function Home() {
   useEffect(() => {
     console.log("user details from home", userDetails);
     if (userDetails.checkComplete) {
-      setProfileComplete(userDetails.checkComplete.interests);
+      setProfileComplete(userDetails.checkComplete.personalInformation);
     }
 
   }, [user]);
     return (
-      <div className="home container">
+      <div className="home-main-container container">
         {(!profileComplete) ? <CompleteUserProfile close={() => setProfileComplete(true)} /> : <></>}
 
-        <div className="home-body row">
+        <div className="home-body">
 
           <div className="col-lg-3 order-2 order-lg-1">
-            {/* <LeftWidget/> */}
+            <LeftWidget/>
+           
           </div>
 
           <div className="home-center col-lg-6 order-1 order-lg-2">
@@ -40,7 +42,9 @@ function Home() {
             <Feed user={user} />
           </div>
 
-          <div className="col-lg-3 order-3"></div>
+          <div className="col-lg-3 order-3 order-lg-3">
+          <RightWidget/>
+          </div>
 
 
         </div>

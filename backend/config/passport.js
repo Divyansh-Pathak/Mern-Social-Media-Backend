@@ -15,14 +15,20 @@ const verifyCallback = (username, password, done) => {
     User.findOne({ "contactDetails.email" : username})
         .then((user) => {
 
-            if (!user) { return done(null, false) }
+            if (!user) { return done(null, false, {
+                message: 'Invalid email!'
+    }) }
             
             const isValid = validPassword(password, user.loginDetails.hash, user.loginDetails.salt);
             
             if (isValid) {
-                return done(null, user);
+                return done(null, user, {
+                    message: 'Login Success'
+        });
             } else {
-                return done(null, false);
+                return done(null, false, {
+                    message: 'Enter correct password!!!'
+        });
             }
         })
         .catch((err) => {   

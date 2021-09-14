@@ -1,4 +1,4 @@
-.app__createPost{
+.app__createPost-text{
     width: 100%;
   }
   
@@ -11,7 +11,7 @@
     padding: 16px 0px;
   }
   
-  .imageUpload__bottom button {
+  /* .imageUpload__bottom button {
       border-radius: 20px;
       border: 1px solid #FF4B2B;
       background-color: #FF4B2B;
@@ -22,7 +22,7 @@
       letter-spacing: 1px;
       text-transform: uppercase;
       transition: transform 80ms ease-in;
-  }
+  } */
   
   button:active {
       transform: scale(0.95);
@@ -61,7 +61,7 @@
       background-color: #eeeeee;
   }
   
-  .imageUpload__bottom {
+  .app__createPost-text .imageUpload__bottom {
     display: flex;
     margin: 0px 16px;
     justify-content: flex-end;

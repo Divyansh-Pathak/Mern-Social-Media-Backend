@@ -1,17 +1,41 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./TextPost.css";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import postRoutes from '../../../apiCall/posts';
 import SelectTags from './selectTag';
+import dataRoutes from '../../../apiCall/dataFromBackend';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { Button, makeStyles } from "@material-ui/core";
+import { SnackbarContext } from "../../HelperComponents/snackbar";
+import PostAddIcon from '@material-ui/icons/PostAdd';
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    backgroundColor: '#FF4B2B',
+      borderRadius: 20,
+      border: 0,
+      color: 'white',
+      fontSize: "80%",
+      height: 40,
+      padding: '0 15px',
+      width: "25%",
+      boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+      overflow: "hidden",
+      margin: "5px"
+  },
+}));
 
 function TextPost({ user }) {
 
+  const classes = useStyles();
+  const setStateSnackbarContext = useContext(SnackbarContext);
+
   const [progress, setProgress] = useState(100);
-  const [tagIsTouched , setTagTouched] = useState(false);
-  const [tags , setTags] = useState([]);
+  const [tagIsTouched, setTagTouched] = useState(false);
+  const [tags, setTags] = useState([]);
   // let tags = new Array;
   function getTags(values) {
-      setTags(values);  
+    setTags(values);
   }
 
 
@@ -22,28 +46,37 @@ function TextPost({ user }) {
     setTextArea(event.target.value);
   };
 
-  const [tagsOptions, setTagOptions] = useState(
-    [{ value: 'Reading Books', label: 'Reading Books' },
-    { value: 'Football', label: 'Foodball' },
-    { value: 'Cricket', label: 'Cricket' },
-    { value: 'Painting', label: 'Painting' },
-    { value: 'Photography', label: 'Photography' },
-    { value: 'Mathematics', label: 'Mathematics' },
-    { value: 'Travel', label: 'Travel' },
-    { value: 'Public Speaking', label: 'Public Speaking' }])
+  const [tagsOptions, setTagOptions] = useState([])
+  useEffect(() => {
+    //Calling communities options from the server and pushing it in communitiesOptions array such that it can be used with react-select
+    dataRoutes.requestAllCommunities().then((response) => {
+      response.map((interests) => {
+        tagsOptions.push({
+          value: interests.communityName,
+          label: interests.communityName,
+        });
+      });
+    }).catch(err => console.log("Something went wrong during calling interests Data", err))
+  }, []);
+
 
 
   function uploadFile(caption, tags, userName, setProgress) {
-    if(caption!==""){
+    if (caption !== "") {
       postRoutes.postText(caption, tags, userName, setProgress);
-    }else{
-      alert("Write in the textarea!");
+      window.location.reload();
+    } else {
+      setStateSnackbarContext(
+        true,
+        "Write something in textarea",
+        "warning"
+    );
     }
-   
+
   };
 
   return (
-    <div className="app__createPost">
+    <div className="app__createPost-text">
       {user ? (
         <div className="App">
           <div className="imageUpload">
@@ -60,8 +93,8 @@ function TextPost({ user }) {
                 options={tagsOptions}
               />
 
-              {(tagIsTouched&&(tags.length===0))&&
-                <p>*Select atleast one tag</p>
+              {(tagIsTouched && (tags.length === 0)) &&
+                <p style={{color:"red"}}>*Select atleast one tag</p>
               }
 
               <textarea
@@ -69,7 +102,7 @@ function TextPost({ user }) {
                 name="create a post"
                 rows="4"
                 value={textArea}
-                placeholder="Share Your Thoughts..."
+                placeholder="   Share Your Thoughts..."
                 onChange={(event) => textAreaChanged(event)}
               ></textarea>
 
@@ -86,14 +119,27 @@ function TextPost({ user }) {
               </div> */}
             </div>
 
+
+
             <div className="imageUpload__bottom">
-              <button
+              <Button
+               color="#FF4B2B"
+                variant="contained"
+                className={classes.button}
+                startIcon={<PostAddIcon />}
+                onClick={() => uploadFile(textArea, tags, user, setProgress)}
+                disabled= {(tags.length===0)}
+              >
+                Post
+              </Button>
+
+              {/* <button
                 className="button"
                 onClick={() => uploadFile(textArea, tags, user, setProgress)}
                 disabled= {tagIsTouched&&(tags.length===0)}
               >
                 Upload
-              </button>
+              </button> */}
             </div>
           </div>
         </div>

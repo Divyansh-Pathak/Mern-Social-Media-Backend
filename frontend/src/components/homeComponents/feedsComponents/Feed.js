@@ -30,6 +30,8 @@ function Feed({ user }) {
   //If Data is Loading....
   const loadComponent = (posts) => {
 
+    
+
     if(posts.length !== 0){
       return  <div className="feed">
       <div className="feed__posts">
@@ -37,6 +39,7 @@ function Feed({ user }) {
           <PostCard
             key={i}
             id={post.postID}
+            profileImageURL={post.uploadedBy.profileImageURL}
             userProfileUrl={post.uploadedBy.userProfileUrl}
             userName= {post.uploadedBy.userName}
             postImageUrl={post.postFileURL}

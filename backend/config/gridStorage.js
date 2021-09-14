@@ -3,9 +3,10 @@ const crypto = require("crypto");
 const path = require('path');
 
 const storage = new GridFsStorage({
-    url: "mongodb://localhost:27017/capstone",
+    url: "mongodb+srv://divyansh_pathak:passionworld@passionworld-mumbai.s5vkd.mongodb.net/passionworldDB?retryWrites=true&w=majority",
     file: (req, file) => {
       return new Promise((resolve, reject) => {
+        console.log({Grifsstorage: req.body});
         crypto.randomBytes(16, (err, buf) => {
           if (err) {
             return reject(err);

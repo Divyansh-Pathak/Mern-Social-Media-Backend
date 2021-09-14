@@ -1,20 +1,17 @@
 const User = require("../models/user");
+const passport = require('passport');
 const genPassword = require('../lib/passwordUtils').genPassword;
 
 
-// const express = require('express');
-// const mongoose = require('mongoose');
-// const passport = require('passport');
+//---------------------------------------SignUp-------------------------------------------------------
 
-
-
-//signup
-const addUser = (req, res,) => {
+const addUser = (req, res, next) => {
 
   const saltHash = genPassword(req.body.password);
 
   const salt = saltHash.salt;
   const hash = saltHash.hash;
+
   const details = new User({
     personalInformation: {
       name: req.body.name,
@@ -27,8 +24,11 @@ const addUser = (req, res,) => {
       hash: hash,
       salt: salt,
     },
-    userProfileURL: "http://www.google.com"
+    userProfileURL: "http://www.google.com",
+    interests: ["Photography", "Reading Books", "Music", "Dance", "Coding", "Computer Science", "Books", "Novels",
+    "Sports", "Cricket", "Football", "Travel", "Science", "Mathematics", "Motivation", "Gym", "Technology", "Politics"],
   });
+
   details.save()
     .then((savedDoc) => {
       res.json({
@@ -37,26 +37,28 @@ const addUser = (req, res,) => {
         email: req.body.email
       });
     })
-    .catch(err => { res.json({ isSignUpSuccessfull: false }); });
+    .catch(err => { res.json({ isSignUpSuccessfull: false, error: err }); });
 };
 
-// editProfile handler
+
+
+//------------------------------------------ editProfile ------------------------------------------------
 
 const editUser = async (req, res) => {
   const filter = req.user._id;
   await User.findByIdAndUpdate(filter , {
     personalInformation : {
       ...req.user.personalInformation,
-      birthPlace: req.body.birthPlace,
-      currentCity: req.body.currentCity,
-      profession : req.body.profession
+      birthPlace: req.body.birthPlace ? req.body.birthPlace : req.user.personalInformation.birthPlace,
+      currentCity: req.body.currentCity ? req.body.currentCity : req.user.personalInformation.currentCity,
+      profession : req.body.profession ? req.body.profession: req.user.personalInformation.profession
     },
     contactDetails : {
       ...req.user.contactDetails,
-      phone : req.body.phone   //unique
+      phone : req.body.phone ? req.body.phone : req.user.contactDetails.phone    //unique
     },
-    Bio : req.body.Bio,
-    // profileImageURL : req.body.profileImageURL,
+    Bio : req.body.bio ? req.body.bio : req.user.Bio,
+    //profileImageURL : "https://i.stack.imgur.com/l60Hf.png",
     // coverImageURL : req.body.coverImageURL,
     // userProfileURL: req.body.userProfileURL,
     followers : [],
@@ -72,14 +74,7 @@ const editUser = async (req, res) => {
 
     }
   });
-
-  //console.log(res.body);
-  
-  // res.json(req.body);
 }
-
-
-//req.isAuthenticated() will return true if user is logged in
 
 const sendUser = (req, res) => {
   if (req.isAuthenticated()) {
@@ -93,7 +88,7 @@ const sendUser = (req, res) => {
       coverImageURL: false,
     }
 
-    if (!(req.user.personalInformation.birthPlace === undefined ||
+    if (!(
       req.user.personalInformation.currentCity === undefined ||
       req.user.personalInformation.profession === undefined)
     ) {
@@ -144,9 +139,23 @@ const sendUser = (req, res) => {
 
 //login
 
+const login = (req, res, next) => {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) { return next(err) }
+    if (!user) {
+      return res.status(400).json({isLoggedIn: false, message: info.message });
+    }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.json({isLoggedIn: true});
+    });
+  })(req, res, next);
+};
+
 
 module.exports = {
   addUser,
   sendUser,
-  editUser
+  editUser,
+  login,
 };

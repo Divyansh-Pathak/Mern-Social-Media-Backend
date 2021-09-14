@@ -92,6 +92,7 @@ const UserProfileForm = ({ renderPage, close }) => {
 
     //Handling the formik form on submit
     const handleSubmit = (values, { setSubmitting }) => {
+        console.log({valueOfUser: values});
         const userUpdatedData = {
             ...values,
             interests: values.interests.map(t => t.value),
